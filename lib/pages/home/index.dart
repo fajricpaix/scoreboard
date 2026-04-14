@@ -288,7 +288,7 @@ class _AutoCarouselState extends State<_AutoCarousel> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: 200,
       child: PageView.builder(
         controller: _controller,
         itemBuilder: (context, index) {
