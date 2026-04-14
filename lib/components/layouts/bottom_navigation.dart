@@ -14,6 +14,15 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(0, -4),
+            blurRadius: 4,
+            color: Color.fromRGBO(0, 0, 0, 0.3),
+          ),
+        ],
+      ),
       child: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
@@ -40,8 +49,8 @@ class BottomNavigation extends StatelessWidget {
         ],
         currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         unselectedItemColor: Colors.grey,
-        backgroundColor: const Color(0xFF1E1E1E),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         onTap: onItemTapped,

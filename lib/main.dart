@@ -18,10 +18,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: primaryColor,
-        scaffoldBackgroundColor: Color(0xFF121212),
+        scaffoldBackgroundColor: backgroundColor,
         colorScheme: ColorScheme.fromSeed(
           seedColor: primaryColor,
           brightness: Brightness.dark,
+        ).copyWith(
+          surface: backgroundColor,
         ),
       ),
       home: const MainScreen(),
