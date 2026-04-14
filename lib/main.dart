@@ -79,7 +79,6 @@ class _MainScreenState extends State<MainScreen> {
               child: IconButton(
                 icon: const Icon(Icons.notifications, color: Colors.white),
                 onPressed: () {
-                  // TODO: navigasi ke halaman notifikasi
                 },
                 tooltip: 'Notifikasi',
               ),
