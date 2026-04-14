@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scoreboard/pages/create/index.dart';
 import 'pages/home/index.dart';
 import 'pages/history/index.dart';
 import 'pages/user/index.dart';
@@ -58,22 +57,6 @@ class _MainScreenState extends State<MainScreen> {
         bottom: false,
         child: _pages[_selectedIndex],
       ),
-      floatingActionButton: _selectedIndex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const CreateMatchPage()),
-                );
-              },
-              backgroundColor: const Color(0xFFFF2E63),
-              shape: const CircleBorder(),
-              child: const Icon(
-                Icons.add,
-                size: 32,
-              ),
-            )
-          : null,
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
