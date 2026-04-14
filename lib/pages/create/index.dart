@@ -93,7 +93,7 @@ class _SportCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.only(bottom: 16),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -109,6 +109,7 @@ class _SportCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: sport.gradientColors.last.withOpacity(0.45),
                   blurRadius: 18,
                   offset: const Offset(0, 6),
@@ -121,12 +122,14 @@ class _SportCard extends StatelessWidget {
                 children: [
                   // Icon bubble
                   Container(
-                    width: 54,
-                    height: 54,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
+                        // ignore: deprecated_member_use
                         color: sport.accentColor.withOpacity(0.5),
                         width: 1.5,
                       ),
@@ -134,7 +137,7 @@ class _SportCard extends StatelessWidget {
                     child: Icon(
                       sport.icon,
                       color: sport.accentColor,
-                      size: 28,
+                      size: 32,
                     ),
                   ),
                   const SizedBox(width: 14),
@@ -147,7 +150,7 @@ class _SportCard extends StatelessWidget {
                           sport.name,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.3,
                           ),
@@ -158,9 +161,9 @@ class _SportCard extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
+                            // ignore: deprecated_member_use
                             color: Colors.white.withOpacity(0.7),
-                            fontSize: 12.5,
-                            height: 1.45,
+                            fontSize: 12,
                           ),
                         ),
                       ],
