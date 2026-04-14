@@ -22,9 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: primaryColor,
           brightness: Brightness.dark,
-        ).copyWith(
-          surface: backgroundColor,
-        ),
+        ).copyWith(surface: backgroundColor),
       ),
       home: const MainScreen(),
     );
@@ -56,10 +54,40 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: _pages[_selectedIndex],
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,
+        title: const Text(
+          'Scoreboard',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: Container(
+              width: 46,
+              height: 46,
+              decoration: BoxDecoration(
+                // ignore: deprecated_member_use
+                color: Theme.of(context).primaryColor.withOpacity(0.25),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.notifications, color: Colors.white),
+                onPressed: () {
+                  // TODO: navigasi ke halaman notifikasi
+                },
+                tooltip: 'Notifikasi',
+              ),
+            ),
+          ),
+        ],
       ),
+      body: SafeArea(bottom: false, child: _pages[_selectedIndex]),
       bottomNavigationBar: BottomNavigation(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
