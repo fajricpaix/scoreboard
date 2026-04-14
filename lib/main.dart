@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'theme/index.dart';
 import 'pages/home/index.dart';
 import 'pages/history/index.dart';
 import 'pages/user/index.dart';
@@ -16,10 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Color(0xFFFF2E63),
+        primaryColor: primaryColor,
         scaffoldBackgroundColor: Color(0xFF121212),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFFFF2E63),
+          seedColor: primaryColor,
           brightness: Brightness.dark,
         ),
       ),

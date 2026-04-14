@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoreboard/pages/create/index.dart';
+import 'package:scoreboard/theme/index.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,7 +23,7 @@ class HomePage extends StatelessWidget {
             MaterialPageRoute(builder: (_) => const CreateMatchPage()),
           );
         },
-        backgroundColor: const Color(0xFFFF2E63),
+        backgroundColor: primaryColor,
         shape: const CircleBorder(),
         child: const Icon(
           Icons.add,
