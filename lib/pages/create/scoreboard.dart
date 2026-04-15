@@ -70,7 +70,17 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     return sportName.contains('tenis') || sportName.contains('padel');
   }
 
+  bool get _isBadminton {
+    final sportName = widget.matchSetup.sport.name.toLowerCase();
+    return sportName.contains('badminton');
+  }
+
   bool get _canSetPoint {
+    if (_isBadminton) {
+      return _isBadmintonSetWinner(_leftScore, _rightScore) ||
+          _isBadmintonSetWinner(_rightScore, _leftScore);
+    }
+
     if (!_usesTennisSequence) {
       return false;
     }
@@ -89,11 +99,23 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     return hasForty;
   }
 
+  bool _isBadmintonSetWinner(int score, int opponentScore) {
+    if (score >= 30) {
+      return true;
+    }
+
+    if (score < 21) {
+      return false;
+    }
+
+    return score - opponentScore >= 2;
+  }
+
   @override
   void initState() {
     super.initState();
     final target = widget.matchSetup.targetSets ?? 0;
-    _setCount = _isSetMode ? (target < 4 ? 4 : target) : 1;
+    _setCount = _isSetMode ? (target < 2 ? 2 : target) : 1;
     _setStartedAt[1] = widget.startedAt;
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || _matchFinishedAt != null) {
@@ -792,6 +814,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                             vertical: 7,
                           ),
                           decoration: BoxDecoration(
+                            // ignore: deprecated_member_use
                             color: widget.matchSetup.sport.gradientColors[0]
                                 .withOpacity(0.12),
                             borderRadius: BorderRadius.circular(10),

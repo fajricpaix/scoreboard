@@ -291,13 +291,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                             ),
                             decoration: BoxDecoration(
                               color: _playerGenderColor(
-                                player['gender'] ?? 'Pria',
-                              ).withOpacity(0.12),
+                                // ignore: deprecated_member_use
+                                player['gender'] ?? 'Pria').withOpacity(0.12),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: _playerGenderColor(
-                                  player['gender'] ?? 'Pria',
-                                ).withOpacity(0.35),
+                                  // ignore: deprecated_member_use
+                                  player['gender'] ?? 'Pria').withOpacity(0.35),
                               ),
                             ),
                             child: Text(
@@ -356,12 +356,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                   ),
                                   decoration: BoxDecoration(
                                     color: isSelected
+                                        // ignore: deprecated_member_use
                                         ? genderColor.withOpacity(0.18)
+                                        // ignore: deprecated_member_use
                                         : genderColor.withOpacity(0.08),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
                                       color: isSelected
                                           ? genderColor
+                                          // ignore: deprecated_member_use
                                           : genderColor.withOpacity(0.4),
                                       width: isSelected ? 1.6 : 1,
                                     ),
@@ -400,6 +403,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                         Text(
                                           '$playCount kali main',
                                           style: TextStyle(
+                                            // ignore: deprecated_member_use
                                             color: genderColor.withOpacity(0.8),
                                             fontSize: 11,
                                             fontWeight: FontWeight.w500,
@@ -578,6 +582,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${widget.matchSetup.sport.name} • ${widget.matchSetup.gameType}',
+                        style: const TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -795,6 +807,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               .matchSetup
                               .sport
                               .gradientColors[0]
+                              // ignore: deprecated_member_use
                               .withOpacity(0.18),
                           foregroundColor:
                               widget.matchSetup.sport.gradientColors[0],

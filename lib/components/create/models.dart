@@ -47,7 +47,7 @@ const List<String> gameTypes = ['Single', 'Ganda'];
 
 const List<String> scoringSystems = ['Points', 'Set'];
 
-const List<int> setOptions = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const List<int> setOptions = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 const List<String> leaderboardRankOptions = ['Point', 'Kemenangan'];
 

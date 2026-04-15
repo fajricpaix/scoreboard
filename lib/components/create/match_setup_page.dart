@@ -19,6 +19,11 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
   String? _selectedGameType;
   String? _selectedLeaderboardRank;
 
+  bool get _isPadel => widget.sport.name.toLowerCase().contains('padel');
+
+  List<String> get _availableGameTypes =>
+      _isPadel ? const ['Ganda'] : gameTypes;
+
   bool get _isFormComplete {
     final matchName = _matchNameController.text.trim();
 
@@ -29,12 +34,17 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
 
   bool get _usesSetSystem {
     final sportName = widget.sport.name.toLowerCase();
-    return sportName.contains('tenis') || sportName.contains('padel');
+    return sportName.contains('tenis') ||
+        sportName.contains('padel') ||
+        sportName.contains('badminton');
   }
 
   @override
   void initState() {
     super.initState();
+    if (_isPadel) {
+      _selectedGameType = 'Ganda';
+    }
     _matchNameController.addListener(_onFormChanged);
   }
 
@@ -61,7 +71,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       gameType: _selectedGameType!,
       scoringSystem: _usesSetSystem ? 'Set' : 'Points',
       targetPoints: _usesSetSystem ? null : 21,
-      targetSets: _usesSetSystem ? 3 : null,
+      targetSets: _usesSetSystem ? 2 : null,
       leaderboardRankBy: _selectedLeaderboardRank!,
     );
 
@@ -286,26 +296,33 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                   ),
                   _buildSection(
                     title: 'Tipe Permainan',
-                    subtitle:
-                        'Pilih mode permainan single atau ganda.',
+                    subtitle: _isPadel
+                        ? 'Padel hanya tersedia untuk mode ganda.'
+                        : 'Pilih mode permainan single atau ganda.',
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         const spacing = 10.0;
-                        final itemWidth = (constraints.maxWidth - spacing) / 2;
+                        final itemCount = _availableGameTypes.length;
+                        final itemWidth = itemCount == 1
+                            ? constraints.maxWidth
+                            : (constraints.maxWidth - spacing) / 2;
 
                         return Wrap(
                           spacing: spacing,
                           runSpacing: spacing,
                           children: [
-                            for (int i = 0; i < gameTypes.length; i++)
+                            for (int i = 0; i < _availableGameTypes.length; i++)
                               SizedBox(
                                 width: itemWidth,
                                 child: _buildToggleButton(
-                                  label: gameTypes[i],
-                                  selected: _selectedGameType == gameTypes[i],
+                                  label: _availableGameTypes[i],
+                                  selected:
+                                      _selectedGameType ==
+                                      _availableGameTypes[i],
                                   onTap: () {
                                     setState(() {
-                                      _selectedGameType = gameTypes[i];
+                                      _selectedGameType =
+                                          _availableGameTypes[i];
                                     });
                                   },
                                 ),
@@ -328,9 +345,11 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                           spacing: spacing,
                           runSpacing: spacing,
                           children: [
-                            for (int i = 0;
-                                i < leaderboardRankOptions.length;
-                                i++)
+                            for (
+                              int i = 0;
+                              i < leaderboardRankOptions.length;
+                              i++
+                            )
                               SizedBox(
                                 width: itemWidth,
                                 child: _buildToggleButton(
@@ -364,7 +383,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                     onPressed: isNextEnabled ? _goToPlayerSetup : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isNextEnabled
-                        ? widget.sport.gradientColors[0]
+                          ? widget.sport.gradientColors[0]
                           : Colors.grey.shade300,
                       foregroundColor: isNextEnabled
                           ? Colors.white
