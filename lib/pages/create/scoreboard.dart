@@ -2,6 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/create/models.dart';
+import 'package:scoreboard/components/scoreboard/match_summary_card.dart';
+import 'package:scoreboard/components/scoreboard/models.dart';
+import 'package:scoreboard/components/scoreboard/player_score_card.dart';
+import 'package:scoreboard/components/scoreboard/score_history_section.dart';
+import 'package:scoreboard/components/scoreboard/set_score_summary.dart';
+import 'package:scoreboard/components/scoreboard/set_selector.dart';
 import 'package:scoreboard/theme/index.dart';
 
 class MatchResult {
@@ -33,20 +39,6 @@ class ScoreboardPage extends StatefulWidget {
   State<ScoreboardPage> createState() => _ScoreboardPageState();
 }
 
-class _ScoreHistoryItem {
-  final int leftScore;
-  final int rightScore;
-  final String note;
-  final int? setNumber;
-
-  const _ScoreHistoryItem({
-    required this.leftScore,
-    required this.rightScore,
-    required this.note,
-    this.setNumber,
-  });
-}
-
 class _ScoreboardPageState extends State<ScoreboardPage> {
   int _leftScore = 0;
   int _rightScore = 0;
@@ -55,7 +47,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   Timer? _ticker;
   DateTime? _matchFinishedAt;
 
-  final List<_ScoreHistoryItem> _history = [];
+  final List<ScoreHistoryItem> _history = [];
   final Map<int, bool> _setWinners = {};
   final Map<int, Duration> _setDurations = {};
   final Map<int, DateTime> _setStartedAt = {};
@@ -132,7 +124,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     super.dispose();
   }
 
-  List<_ScoreHistoryItem> get _visibleHistory {
+  List<ScoreHistoryItem> get _visibleHistory {
     if (!_isSetMode) {
       return _history;
     }
@@ -260,7 +252,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   void _appendHistory(String note) {
     _history.insert(
       0,
-      _ScoreHistoryItem(
+      ScoreHistoryItem(
         leftScore: _leftScore,
         rightScore: _rightScore,
         note: note,
@@ -395,31 +387,10 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     });
   }
 
-  Widget _scoreActionButton({
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return SizedBox(
-      width: 32,
-      height: 32,
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: textColor,
-          padding: EdgeInsets.zero,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Icon(icon, size: 18),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final accentColor = widget.matchSetup.sport.gradientColors[0];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -441,226 +412,41 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
               children: [
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: widget.matchSetup.sport.gradientColors,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(22),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.matchSetup.matchName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Row(
-                        children: [
-                          const Text(
-                            'Durasi : ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const Spacer(),
-                          Text(
-                            _formatDuration(_matchDuration),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                MatchSummaryCard(
+                  title: widget.matchSetup.matchName,
+                  durationText: _formatDuration(_matchDuration),
+                  gradientColors: widget.matchSetup.sport.gradientColors,
                 ),
 
-                // Set Scoreboard
                 if (_isSetMode) ...[
                   const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: widget.matchSetup.sport.gradientColors[0],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '$_leftSetWins',
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        ':',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: textColor,
-                          fontSize: 36,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: widget.matchSetup.sport.gradientColors[0],
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          '$_rightSetWins',
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
+                  SetScoreSummary(
+                    leftSetWins: _leftSetWins,
+                    rightSetWins: _rightSetWins,
+                    cardColor: accentColor,
                   ),
                 ],
                 const SizedBox(height: 12),
 
-                // Scoreboard
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _leftPlayerColor,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.leftPlayerName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _scoreText(_leftScore),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 38,
-                                fontWeight: FontWeight.w800,
-                                height: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _scoreActionButton(
-                                  icon: Icons.remove,
-                                  onTap: () => _changeLeftScore(-1),
-                                ),
-                                const SizedBox(width: 8),
-                                _scoreActionButton(
-                                  icon: Icons.add,
-                                  onTap: () => _changeLeftScore(1),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      child: PlayerScoreCard(
+                        playerName: widget.leftPlayerName,
+                        scoreText: _scoreText(_leftScore),
+                        backgroundColor: _leftPlayerColor,
+                        onDecrease: () => _changeLeftScore(-1),
+                        onIncrease: () => _changeLeftScore(1),
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _rightPlayerColor,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.rightPlayerName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _scoreText(_rightScore),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 38,
-                                fontWeight: FontWeight.w800,
-                                height: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                _scoreActionButton(
-                                  icon: Icons.remove,
-                                  onTap: () => _changeRightScore(-1),
-                                ),
-                                const SizedBox(width: 8),
-                                _scoreActionButton(
-                                  icon: Icons.add,
-                                  onTap: () => _changeRightScore(1),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      child: PlayerScoreCard(
+                        playerName: widget.rightPlayerName,
+                        scoreText: _scoreText(_rightScore),
+                        backgroundColor: _rightPlayerColor,
+                        onDecrease: () => _changeRightScore(-1),
+                        onIncrease: () => _changeRightScore(1),
                       ),
                     ),
                   ],
@@ -672,8 +458,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                   child: ElevatedButton(
                     onPressed: _canSetPoint ? _setPoint : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          widget.matchSetup.sport.gradientColors[0],
+                      backgroundColor: accentColor,
                       foregroundColor: Colors.white,
                       disabledBackgroundColor: Colors.grey.shade300,
                       disabledForegroundColor: Colors.grey.shade600,
@@ -691,207 +476,42 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                 ),
                 const SizedBox(height: 20),
 
-                // History Scoreboard
                 if (_isSetMode) ...[
-                  SizedBox(
-                    height: 38,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: _setCount + 1,
-                      itemBuilder: (context, index) {
-                        if (index == _setCount) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: SizedBox(
-                              width: 38,
-                              child: OutlinedButton(
-                                onPressed: _addCustomSet,
-                                style: OutlinedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: Colors.white,
-                                  foregroundColor:
-                                      widget.matchSetup.sport.gradientColors[0],
-                                  side: BorderSide(
-                                    color: widget
-                                        .matchSetup
-                                        .sport
-                                        .gradientColors[0],
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: const Icon(Icons.add, size: 18),
-                              ),
-                            ),
-                          );
+                  SetSelector(
+                    setCount: _setCount,
+                    selectedSet: _selectedSet,
+                    setWinners: _setWinners,
+                    leftPlayerColor: _leftPlayerColor,
+                    rightPlayerColor: _rightPlayerColor,
+                    accentColor: accentColor,
+                    onAddSet: _addCustomSet,
+                    onSelectSet: (setNumber) {
+                      setState(() {
+                        if (_selectedSet != setNumber) {
+                          _leftScore = 0;
+                          _rightScore = 0;
                         }
-
-                        final setNumber = index + 1;
-                        final selected = setNumber == _selectedSet;
-                        final setWinner = _setWinners[setNumber];
-                        final hasWinner = setWinner != null;
-                        final winnerColor = setWinner == true
-                            ? _leftPlayerColor
-                            : _rightPlayerColor;
-                        final backgroundColor = hasWinner
-                            ? winnerColor
-                            : (selected
-                                  ? widget.matchSetup.sport.gradientColors[0]
-                                  : Colors.white);
-                        final foregroundColor = hasWinner || selected
-                            ? Colors.white
-                            : textColor;
-                        final borderColor = hasWinner
-                            ? winnerColor
-                            : widget.matchSetup.sport.gradientColors[0];
-
-                        return Padding(
-                          padding: EdgeInsets.only(
-                            right: index == _setCount - 1 ? 0 : 8,
-                          ),
-                          child: OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                if (_selectedSet != setNumber) {
-                                  _leftScore = 0;
-                                  _rightScore = 0;
-                                }
-                                _setStartedAt.putIfAbsent(
-                                  setNumber,
-                                  () => DateTime.now(),
-                                );
-                                _selectedSet = setNumber;
-                              });
-                            },
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: backgroundColor,
-                              foregroundColor: foregroundColor,
-                              side: BorderSide(color: borderColor),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              'Set $setNumber',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
+                        _setStartedAt.putIfAbsent(
+                          setNumber,
+                          () => DateTime.now(),
                         );
-                      },
-                    ),
+                        _selectedSet = setNumber;
+                      });
+                    },
                   ),
                   const SizedBox(height: 14),
                 ],
-                const Text(
-                  'Riwayat Set',
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                ScoreHistorySection(
+                  isSetMode: _isSetMode,
+                  selectedSet: _selectedSet,
+                  hasSetTimer: _setStartedAt.containsKey(_selectedSet),
+                  setDurationText: _formatDuration(
+                    _setDurationFor(_selectedSet),
                   ),
+                  accentColor: accentColor,
+                  items: _visibleHistory,
+                  scoreTextBuilder: _scoreText,
                 ),
-                const SizedBox(height: 10),
-                if (_isSetMode)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 7,
-                          ),
-                          decoration: BoxDecoration(
-                            // ignore: deprecated_member_use
-                            color: widget.matchSetup.sport.gradientColors[0]
-                                .withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            'Set $_selectedSet',
-                            style: TextStyle(
-                              color: widget.matchSetup.sport.gradientColors[0],
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            'Durasi ${_setStartedAt.containsKey(_selectedSet) ? _formatDuration(_setDurationFor(_selectedSet)) : '--:--'}',
-                            style: const TextStyle(
-                              color: textColor,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                if (_visibleHistory.isEmpty)
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
-                    ),
-                    child: const Text(
-                      'Belum ada riwayat skor.',
-                      style: TextStyle(color: Colors.black54, fontSize: 13),
-                    ),
-                  ),
-                if (_visibleHistory.isNotEmpty)
-                  ..._visibleHistory.map((item) {
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xFFE5E7EB)),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            '${_scoreText(item.leftScore)} - ${_scoreText(item.rightScore)}',
-                            style: const TextStyle(
-                              color: textColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              item.note,
-                              style: const TextStyle(
-                                color: Colors.black54,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
               ],
             ),
           ),
@@ -904,7 +524,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                 child: ElevatedButton(
                   onPressed: _canFinalizeMatch ? _finishMatch : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.matchSetup.sport.gradientColors[0],
+                    backgroundColor: accentColor,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade300,
                     disabledForegroundColor: Colors.grey.shade600,

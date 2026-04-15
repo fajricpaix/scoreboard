@@ -292,12 +292,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                             decoration: BoxDecoration(
                               color: _playerGenderColor(
                                 // ignore: deprecated_member_use
-                                player['gender'] ?? 'Pria').withOpacity(0.12),
+                                player['gender'] ?? 'Pria',
+                              ).withOpacity(0.12),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: _playerGenderColor(
                                   // ignore: deprecated_member_use
-                                  player['gender'] ?? 'Pria').withOpacity(0.35),
+                                  player['gender'] ?? 'Pria',
+                                ).withOpacity(0.35),
                               ),
                             ),
                             child: Text(
@@ -644,141 +646,136 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 ),
                 const SizedBox(height: 16),
                 Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _playerNameController,
-                              textInputAction: TextInputAction.done,
-                              onSubmitted: (_) => _addPlayer(),
-                              style: const TextStyle(color: textColor),
-                              decoration: InputDecoration(
-                                labelText: 'Nama pemain',
-                                hintText: 'Contoh: John Doe',
-                                labelStyle: const TextStyle(color: textColor),
-                                floatingLabelStyle: const TextStyle(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _playerNameController,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _addPlayer(),
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          labelText: 'Nama pemain',
+                          hintText: 'Contoh: John Doe',
+                          labelStyle: const TextStyle(color: textColor),
+                          floatingLabelStyle: const TextStyle(color: textColor),
+                          hintStyle: const TextStyle(color: textColor),
+                          prefixIcon: PopupMenuButton<String>(
+                            tooltip: 'Pilih gender',
+                            color: Colors.white,
+                            initialValue: _selectedGender,
+                            onSelected: (value) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            },
+                            icon: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  _selectedGender == 'Pria'
+                                      ? Icons.male
+                                      : Icons.female,
+                                  color: _selectedGender == 'Pria'
+                                      ? Colors.blue
+                                      : Colors.pink,
+                                ),
+                                const SizedBox(width: 2),
+                                const Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 16,
                                   color: textColor,
                                 ),
-                                hintStyle: const TextStyle(color: textColor),
-                                prefixIcon: PopupMenuButton<String>(
-                                  tooltip: 'Pilih gender',
-                                  color: Colors.white,
-                                  initialValue: _selectedGender,
-                                  onSelected: (value) {
-                                    setState(() {
-                                      _selectedGender = value;
-                                    });
-                                  },
-                                  icon: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        _selectedGender == 'Pria'
-                                            ? Icons.male
-                                            : Icons.female,
-                                        color: _selectedGender == 'Pria'
-                                            ? Colors.blue
-                                            : Colors.pink,
-                                      ),
-                                      const SizedBox(width: 2),
-                                      const Icon(
-                                        Icons.arrow_drop_down,
-                                        size: 16,
-                                        color: textColor,
-                                      ),
-                                    ],
-                                  ),
-                                  itemBuilder: (context) => const [
-                                    PopupMenuItem<String>(
-                                      value: 'Pria',
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.male,
-                                            size: 18,
-                                            color: Colors.blue,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'Pria',
-                                            style: TextStyle(color: textColor),
-                                          ),
-                                        ],
-                                      ),
+                              ],
+                            ),
+                            itemBuilder: (context) => const [
+                              PopupMenuItem<String>(
+                                value: 'Pria',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.male,
+                                      size: 18,
+                                      color: Colors.blue,
                                     ),
-                                    PopupMenuItem<String>(
-                                      value: 'Wanita',
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.female,
-                                            size: 18,
-                                            color: Colors.pink,
-                                          ),
-                                          SizedBox(width: 8),
-                                          Text(
-                                            'Wanita',
-                                            style: TextStyle(color: textColor),
-                                          ),
-                                        ],
-                                      ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Pria',
+                                      style: TextStyle(color: textColor),
                                     ),
                                   ],
                                 ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 16,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE5E7EB),
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE5E7EB),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                  borderSide: BorderSide(
-                                    color: widget
-                                        .matchSetup
-                                        .sport
-                                        .gradientColors[0],
-                                    width: 1.5,
-                                  ),
+                              ),
+                              PopupMenuItem<String>(
+                                value: 'Wanita',
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.female,
+                                      size: 18,
+                                      color: Colors.pink,
+                                    ),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'Wanita',
+                                      style: TextStyle(color: textColor),
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ],
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 16,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE5E7EB),
                             ),
                           ),
-                          const SizedBox(width: 12),
-                          SizedBox(
-                            width: 52,
-                            height: 52,
-                            child: ElevatedButton(
-                              onPressed: _canAddPlayer ? _addPlayer : null,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    widget.matchSetup.sport.gradientColors[0],
-                                foregroundColor: Colors.white,
-                                disabledBackgroundColor: Colors.grey.shade300,
-                                disabledForegroundColor: Colors.grey.shade600,
-                                padding: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                elevation: 0,
-                              ),
-                              child: const Icon(Icons.add),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(
+                              color: Color(0xFFE5E7EB),
                             ),
                           ),
-                        ],
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(
+                              color: widget.matchSetup.sport.gradientColors[0],
+                              width: 1.5,
+                            ),
+                          ),
+                        ),
                       ),
+                    ),
+                    const SizedBox(width: 12),
+                    SizedBox(
+                      width: 52,
+                      height: 52,
+                      child: ElevatedButton(
+                        onPressed: _canAddPlayer ? _addPlayer : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              widget.matchSetup.sport.gradientColors[0],
+                          foregroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.grey.shade300,
+                          disabledForegroundColor: Colors.grey.shade600,
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
                 ...List.generate(sortedPlayers.length, (index) {
                   final player = sortedPlayers[index];
@@ -878,7 +875,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                     fontSize: 11,
                                   ),
                                 ),
-                              ])
+                              ],
+                            ),
                           ],
                         ),
                       ],
