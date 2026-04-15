@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/create/models.dart';
+import 'package:scoreboard/components/leaderboard/leaderboard_player_tile.dart';
+import 'package:scoreboard/components/leaderboard/leaderboard_summary_card.dart';
+import 'package:scoreboard/components/leaderboard/player_input_bar.dart';
+import 'package:scoreboard/components/leaderboard/start_match_dialog.dart';
 import 'package:scoreboard/pages/create/scoreboard.dart';
 import 'package:scoreboard/theme/index.dart';
 import 'package:scoreboard/utils/capitalize.dart';
@@ -221,243 +225,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       return;
     }
 
-    final selectedIndexes = <int>[];
-
     await showDialog<void>(
       context: context,
-      builder: (dialogContext) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            final selectedPlayers = selectedIndexes
-                .map((index) => sortedPlayers[index])
-                .toList();
-
-            return AlertDialog(
-              backgroundColor: backgroundColor,
-              surfaceTintColor: backgroundColor,
-              title: Text(
-                _isDoubleMatch
-                    ? 'Pilih 4 pemain untuk ganda'
-                    : 'Pilih 2 pemain untuk single',
-                style: const TextStyle(
-                  color: textColor,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              content: SizedBox(
-                width: double.maxFinite,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _isDoubleMatch
-                          ? 'Dua pemain pertama akan menjadi tim kiri dan dua pemain berikutnya menjadi tim kanan.'
-                          : 'Pilih dua pemain yang akan langsung masuk ke scoreboard.',
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 12,
-                        height: 1.4,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Terpilih ${selectedIndexes.length}/$_requiredPlayerCount',
-                      style: const TextStyle(
-                        color: textColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (selectedPlayers.isNotEmpty) ...[
-                      const SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: List.generate(selectedPlayers.length, (
-                          index,
-                        ) {
-                          final player = selectedPlayers[index];
-                          final orderLabel = _isDoubleMatch
-                              ? (index < 2 ? 'Tim 1' : 'Tim 2')
-                              : index == 0
-                              ? 'Kiri'
-                              : 'Kanan';
-
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _playerGenderColor(
-                                // ignore: deprecated_member_use
-                                player['gender'] ?? 'Pria',
-                              ).withOpacity(0.12),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: _playerGenderColor(
-                                  // ignore: deprecated_member_use
-                                  player['gender'] ?? 'Pria',
-                                ).withOpacity(0.35),
-                              ),
-                            ),
-                            child: Text(
-                              '$orderLabel: ${player['name'] ?? '-'}',
-                              style: TextStyle(
-                                color: _playerGenderColor(
-                                  player['gender'] ?? 'Pria',
-                                ),
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                    ],
-                    const SizedBox(height: 16),
-                    Flexible(
-                      child: SingleChildScrollView(
-                        child: Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: List.generate(sortedPlayers.length, (
-                            index,
-                          ) {
-                            final player = sortedPlayers[index];
-                            final isSelected = selectedIndexes.contains(index);
-                            final isDisabled =
-                                !isSelected &&
-                                selectedIndexes.length >= _requiredPlayerCount;
-                            final genderColor = _playerGenderColor(
-                              player['gender'] ?? 'Pria',
-                            );
-                            final playCount = _playerPlayCount(player);
-
-                            return Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(16),
-                                onTap: isDisabled
-                                    ? null
-                                    : () {
-                                        setDialogState(() {
-                                          if (isSelected) {
-                                            selectedIndexes.remove(index);
-                                          } else {
-                                            selectedIndexes.add(index);
-                                          }
-                                        });
-                                      },
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 180),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 14,
-                                    vertical: 12,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isSelected
-                                        // ignore: deprecated_member_use
-                                        ? genderColor.withOpacity(0.18)
-                                        // ignore: deprecated_member_use
-                                        : genderColor.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? genderColor
-                                          // ignore: deprecated_member_use
-                                          : genderColor.withOpacity(0.4),
-                                      width: isSelected ? 1.6 : 1,
-                                    ),
-                                  ),
-                                  child: Opacity(
-                                    opacity: isDisabled ? 0.45 : 1,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            if (isSelected) ...[
-                                              Icon(
-                                                Icons.check_circle,
-                                                size: 16,
-                                                color: genderColor,
-                                              ),
-                                              const SizedBox(width: 6),
-                                            ],
-                                            Flexible(
-                                              child: Text(
-                                                player['name'] ?? '-',
-                                                style: TextStyle(
-                                                  color: genderColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Text(
-                                          '$playCount kali main',
-                                          style: TextStyle(
-                                            // ignore: deprecated_member_use
-                                            color: genderColor.withOpacity(0.8),
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: const Text(
-                    'Batal',
-                    style: TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: selectedIndexes.length == _requiredPlayerCount
-                      ? () {
-                          Navigator.of(dialogContext).pop();
-                          _startMatchWithPlayers(
-                            selectedIndexes
-                                .map((index) => sortedPlayers[index])
-                                .toList(),
-                          );
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.matchSetup.sport.gradientColors[0],
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: Colors.grey.shade300,
-                    disabledForegroundColor: Colors.grey.shade600,
-                    elevation: 0,
-                  ),
-                  child: const Text('Mulai'),
-                ),
-              ],
-            );
-          },
+      builder: (_) {
+        return StartMatchDialog(
+          players: sortedPlayers,
+          requiredPlayerCount: _requiredPlayerCount,
+          isDoubleMatch: _isDoubleMatch,
+          accentColor: widget.matchSetup.sport.gradientColors[0],
+          genderColorBuilder: _playerGenderColor,
+          playerPlayCountBuilder: _playerPlayCount,
+          onStart: _startMatchWithPlayers,
         );
       },
     );
@@ -539,6 +317,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     final sortedPlayers = _sortedPlayers;
     final rankModeLabel = _sortByPoint ? 'Point' : 'Kemenangan';
     final canStart = sortedPlayers.length >= _requiredPlayerCount;
+    final accentColor = widget.matchSetup.sport.gradientColors[0];
 
     return Scaffold(
       appBar: AppBar(
@@ -566,54 +345,13 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
               children: [
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: widget.matchSetup.sport.gradientColors,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.matchSetup.matchName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        '${widget.matchSetup.sport.name} • ${widget.matchSetup.gameType}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Urutan rank: $rankModeLabel tertinggi',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Jumlah Pemain: ${sortedPlayers.length} pemain',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+                LeaderboardSummaryCard(
+                  matchName: widget.matchSetup.matchName,
+                  sportName: widget.matchSetup.sport.name,
+                  gameType: widget.matchSetup.gameType,
+                  rankModeLabel: rankModeLabel,
+                  playerCount: sortedPlayers.length,
+                  gradientColors: widget.matchSetup.sport.gradientColors,
                 ),
                 const SizedBox(height: 16),
                 SizedBox(
@@ -621,8 +359,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   child: ElevatedButton.icon(
                     onPressed: canStart ? _showStartMatchDialog : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          widget.matchSetup.sport.gradientColors[0],
+                      backgroundColor: accentColor,
                       foregroundColor: Colors.white,
                       disabledBackgroundColor: Colors.grey.shade300,
                       disabledForegroundColor: Colors.grey.shade600,
@@ -645,242 +382,24 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _playerNameController,
-                        textInputAction: TextInputAction.done,
-                        onSubmitted: (_) => _addPlayer(),
-                        style: const TextStyle(color: textColor),
-                        decoration: InputDecoration(
-                          labelText: 'Nama pemain',
-                          hintText: 'Contoh: John Doe',
-                          labelStyle: const TextStyle(color: textColor),
-                          floatingLabelStyle: const TextStyle(color: textColor),
-                          hintStyle: const TextStyle(color: textColor),
-                          prefixIcon: PopupMenuButton<String>(
-                            tooltip: 'Pilih gender',
-                            color: Colors.white,
-                            initialValue: _selectedGender,
-                            onSelected: (value) {
-                              setState(() {
-                                _selectedGender = value;
-                              });
-                            },
-                            icon: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  _selectedGender == 'Pria'
-                                      ? Icons.male
-                                      : Icons.female,
-                                  color: _selectedGender == 'Pria'
-                                      ? Colors.blue
-                                      : Colors.pink,
-                                ),
-                                const SizedBox(width: 2),
-                                const Icon(
-                                  Icons.arrow_drop_down,
-                                  size: 16,
-                                  color: textColor,
-                                ),
-                              ],
-                            ),
-                            itemBuilder: (context) => const [
-                              PopupMenuItem<String>(
-                                value: 'Pria',
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.male,
-                                      size: 18,
-                                      color: Colors.blue,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Pria',
-                                      style: TextStyle(color: textColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem<String>(
-                                value: 'Wanita',
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.female,
-                                      size: 18,
-                                      color: Colors.pink,
-                                    ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Wanita',
-                                      style: TextStyle(color: textColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFE5E7EB),
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                              color: widget.matchSetup.sport.gradientColors[0],
-                              width: 1.5,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    SizedBox(
-                      width: 52,
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: _canAddPlayer ? _addPlayer : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              widget.matchSetup.sport.gradientColors[0],
-                          foregroundColor: Colors.white,
-                          disabledBackgroundColor: Colors.grey.shade300,
-                          disabledForegroundColor: Colors.grey.shade600,
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Icon(Icons.add),
-                      ),
-                    ),
-                  ],
+                PlayerInputBar(
+                  controller: _playerNameController,
+                  selectedGender: _selectedGender,
+                  canAddPlayer: _canAddPlayer,
+                  accentColor: accentColor,
+                  onGenderSelected: (value) {
+                    setState(() {
+                      _selectedGender = value;
+                    });
+                  },
+                  onAddPlayer: _addPlayer,
                 ),
                 const SizedBox(height: 16),
                 ...List.generate(sortedPlayers.length, (index) {
-                  final player = sortedPlayers[index];
-                  final isMale = (player['gender'] ?? 'Pria') == 'Pria';
-                  final name = player['name'] ?? '-';
-                  final point = player['point'] ?? '0';
-                  final win = player['win'] ?? '0';
-                  final lose = player['lose'] ?? '0';
-
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
-                    ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: widget
-                              .matchSetup
-                              .sport
-                              .gradientColors[0]
-                              // ignore: deprecated_member_use
-                              .withOpacity(0.18),
-                          foregroundColor:
-                              widget.matchSetup.sport.gradientColors[0],
-                          child: Text('${index + 1}'),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                name,
-                                style: const TextStyle(
-                                  color: textColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 3),
-                              Row(
-                                children: [
-                                  Icon(
-                                    isMale ? Icons.male : Icons.female,
-                                    size: 13,
-                                    color: isMale ? Colors.blue : Colors.pink,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    player['gender'] ?? 'Pria',
-                                    style: const TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'Point: $point',
-                              style: const TextStyle(
-                                color: textColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Win: $win •',
-                                  style: const TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                                Text(
-                                  ' Lose: $lose',
-                                  style: const TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  return LeaderboardPlayerTile(
+                    rank: index + 1,
+                    player: sortedPlayers[index],
+                    accentColor: accentColor,
                   );
                 }),
               ],
@@ -895,7 +414,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 child: ElevatedButton(
                   onPressed: _canFinishTogether ? _confirmFinishTogether : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: widget.matchSetup.sport.gradientColors[0],
+                    backgroundColor: accentColor,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade300,
                     disabledForegroundColor: Colors.grey.shade600,
