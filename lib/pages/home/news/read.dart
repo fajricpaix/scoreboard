@@ -70,12 +70,19 @@ class _ReadNewsPageState extends State<ReadNewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         foregroundColor: textColor,
         elevation: 0,
         scrolledUnderElevation: 0,
+        titleSpacing: 0,
+        title: const Text(
+          'Baca Berita',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: textColor,
+          ),
+        ),
       ),
       body: SafeArea(
         top: false,
@@ -95,6 +102,9 @@ class _ReadNewsPageState extends State<ReadNewsPage> {
                           onPressed: _shareNews,
                           icon: const Icon(Icons.share_outlined, size: 18),
                           label: const Text('Share'),
+                          style: FilledButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          ),
                         ),
                         const Spacer(),
                         Text(
@@ -102,7 +112,7 @@ class _ReadNewsPageState extends State<ReadNewsPage> {
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
-                            color: Colors.black54,
+                            color: Colors.white54,
                           ),
                         ),
                       ],
@@ -123,7 +133,7 @@ class _ReadNewsPageState extends State<ReadNewsPage> {
                       style: const TextStyle(
                         fontSize: 15,
                         height: 1.7,
-                        color: Colors.black87,
+                        color: Colors.white70,
                       ),
                     ),
                     const SizedBox(height: 32),

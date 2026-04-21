@@ -26,9 +26,9 @@ class LeaderboardPlayerTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: accentColor),
       ),
       child: Row(
         children: [
@@ -63,7 +63,7 @@ class LeaderboardPlayerTile extends StatelessWidget {
                     Text(
                       player['gender'] ?? 'Pria',
                       style: const TextStyle(
-                        color: Colors.black54,
+                        color: Colors.white54,
                         fontSize: 11,
                       ),
                     ),

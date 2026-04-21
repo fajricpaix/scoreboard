@@ -36,11 +36,11 @@ class ScoreHistorySection extends StatelessWidget {
     final rightName = rightPlayerName.toLowerCase();
 
     if (note.startsWith(leftName) || note.contains('dimenangkan $leftName')) {
-      return leftPlayerColor.withAlpha(26);
+      return leftPlayerColor;
     }
 
     if (note.startsWith(rightName) || note.contains('dimenangkan $rightName')) {
-      return rightPlayerColor.withAlpha(26);
+      return rightPlayerColor;
     }
 
     return Colors.white;
@@ -81,7 +81,7 @@ class ScoreHistorySection extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: const Color(0xFFE5E7EB)),
             ),
@@ -123,13 +123,13 @@ class ScoreHistorySection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: const Color(0xFFE5E7EB)),
             ),
             child: const Text(
               'Belum ada riwayat skor.',
-              style: TextStyle(color: Colors.black54, fontSize: 13),
+              style: TextStyle(color: Colors.white54, fontSize: 13),
             ),
           ),
         if (items.isNotEmpty)
@@ -160,7 +160,7 @@ class ScoreHistorySection extends StatelessWidget {
                     child: Text(
                       item.note,
                       style: const TextStyle(
-                        color: Colors.black54,
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                     ),

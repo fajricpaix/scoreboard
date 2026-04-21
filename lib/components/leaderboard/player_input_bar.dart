@@ -38,7 +38,7 @@ class PlayerInputBar extends StatelessWidget {
               hintStyle: const TextStyle(color: textColor),
               prefixIcon: PopupMenuButton<String>(
                 tooltip: 'Pilih gender',
-                color: Colors.white,
+                color: backgroundColor,
                 initialValue: selectedGender,
                 onSelected: onGenderSelected,
                 icon: Row(
@@ -82,18 +82,18 @@ class PlayerInputBar extends StatelessWidget {
                 ],
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: backgroundColor,
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 16,
               ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                borderSide: BorderSide(color: accentColor),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                borderSide: BorderSide(color: accentColor),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -111,8 +111,8 @@ class PlayerInputBar extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: accentColor,
               foregroundColor: Colors.white,
-              disabledBackgroundColor: Colors.grey.shade300,
-              disabledForegroundColor: Colors.grey.shade600,
+              disabledBackgroundColor: Colors.grey.shade800,
+              disabledForegroundColor: Colors.grey.shade300,
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),

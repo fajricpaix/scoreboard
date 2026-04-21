@@ -29,7 +29,7 @@ class PlayerScoreCard extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xFF121212),
           foregroundColor: textColor,
           padding: EdgeInsets.zero,
           elevation: 0,

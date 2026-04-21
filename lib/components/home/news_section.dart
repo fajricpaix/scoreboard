@@ -3,6 +3,7 @@ import 'package:scoreboard/components/home/news_api_service.dart';
 import 'package:scoreboard/components/home/news_card.dart';
 import 'package:scoreboard/pages/home/news/read.dart';
 import 'package:scoreboard/theme/index.dart';
+import 'package:scoreboard/theme/index.dart' as AppTheme;
 
 class NewsSection extends StatefulWidget {
   final int itemCount;
@@ -26,7 +27,7 @@ class _NewsSectionState extends State<NewsSection> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.backgroundColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -43,7 +44,7 @@ class _NewsSectionState extends State<NewsSection> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: textColor,
+                color: Colors.white,
               ),
             ),
           ),

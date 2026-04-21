@@ -228,8 +228,8 @@ class _StartMatchDialogState extends State<StartMatchDialog> {
           style: ElevatedButton.styleFrom(
             backgroundColor: widget.accentColor,
             foregroundColor: Colors.white,
-            disabledBackgroundColor: Colors.grey.shade300,
-            disabledForegroundColor: Colors.grey.shade600,
+            disabledBackgroundColor: Colors.grey.shade800,
+            disabledForegroundColor: Colors.grey.shade200,
             elevation: 0,
           ),
           child: const Text('Mulai'),

@@ -114,7 +114,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       prefixIconColor: iconColor,
       prefixIcon: prefixIcon,
       filled: true,
-      fillColor: Colors.white,
+      fillColor: backgroundColor,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -140,11 +140,11 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       margin: const EdgeInsets.only(bottom: 18),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x14000000),
+            color: Color(0x61FFFFFF),
             blurRadius: 18,
             offset: Offset(0, 8),
           ),
@@ -165,7 +165,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
           Text(
             subtitle,
             style: const TextStyle(
-              color: Colors.black54,
+              color: Colors.white54,
               fontSize: 12,
               height: 1.4,
             ),
@@ -193,7 +193,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
-            color: selected ? toggleColor : Colors.white,
+            color: selected ? toggleColor : backgroundColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: toggleColor, width: 1.3),
           ),
@@ -453,8 +453,8 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                       foregroundColor: isNextEnabled
                           ? Colors.white
                           : Colors.grey.shade600,
-                      disabledBackgroundColor: Colors.grey.shade300,
-                      disabledForegroundColor: Colors.grey.shade600,
+                      disabledBackgroundColor: Colors.grey.shade800,
+                      disabledForegroundColor: Colors.grey.shade500,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(

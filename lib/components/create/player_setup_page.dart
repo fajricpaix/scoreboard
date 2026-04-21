@@ -110,9 +110,9 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9FAFB),
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: iconColor),
       ),
       child: Row(
         children: [
@@ -125,7 +125,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                 Text(
                   label,
                   style: const TextStyle(
-                    color: Colors.black54,
+                    color: textColor,
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                   ),
@@ -248,7 +248,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                       ? 'Domino membutuhkan tepat 4 pemain.'
                       : 'Tambahkan nama pemain satu per satu, lalu cek daftar pemain di bawah.',
                   style: const TextStyle(
-                    color: Colors.black54,
+                    color: Colors.white54,
                     fontSize: 12,
                     height: 1.4,
                   ),
@@ -272,7 +272,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                           prefixIconColor: matchSetup.sport.gradientColors[0],
                           prefixIcon: PopupMenuButton<String>(
                             tooltip: 'Pilih gender',
-                            color: Colors.white,
+                            color: backgroundColor,
                             initialValue: _selectedGender,
                             onSelected: (value) {
                               setState(() {
@@ -338,21 +338,21 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                             ],
                           ),
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: backgroundColor,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 16,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFE5E7EB),
+                            borderSide: BorderSide(
+                              color: matchSetup.sport.gradientColors[0],
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFE5E7EB),
+                            borderSide: BorderSide(
+                              color: matchSetup.sport.gradientColors[0],
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -374,8 +374,8 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: matchSetup.sport.gradientColors[0],
                           foregroundColor: Colors.white,
-                          disabledBackgroundColor: Colors.grey.shade300,
-                          disabledForegroundColor: Colors.grey.shade600,
+                          disabledBackgroundColor: Colors.grey.shade800,
+                          disabledForegroundColor: Colors.grey.shade300,
                           padding: EdgeInsets.zero,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -414,19 +414,19 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                   Container(
                     padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: backgroundColor,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
+                      border: Border.all(color: const Color(0xFF7E0101)),
                     ),
                     child: const Row(
                       children: [
-                        Icon(Icons.groups_outlined, color: Colors.black45),
+                        Icon(Icons.groups_outlined, color: Colors.white54),
                         SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             'Belum ada pemain. Tambahkan nama pemain untuk membentuk daftar peserta.',
                             style: TextStyle(
-                              color: Colors.black54,
+                              color: Colors.white54,
                               fontSize: 13,
                               height: 1.4,
                             ),
@@ -453,11 +453,11 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: backgroundColor,
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: const [
                           BoxShadow(
-                            color: Color(0x10000000),
+                            color: Color(0xFF5B5B5B),
                             blurRadius: 12,
                             offset: Offset(0, 6),
                           ),
@@ -510,7 +510,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                           IconButton(
                             onPressed: () => _removePlayer(index),
                             icon: const Icon(Icons.close_rounded),
-                            color: Colors.black54,
+                            color: Colors.white54,
                             tooltip: 'Hapus pemain',
                           ),
                         ],

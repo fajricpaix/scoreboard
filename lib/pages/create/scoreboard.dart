@@ -67,7 +67,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   final Map<int, DateTime> _setStartedAt = {};
 
   static const Color _leftPlayerColor = Color(0xFFFE7F2D);
-  static const Color _rightPlayerColor = Color(0xFF233D4D);
+  static const Color _rightPlayerColor = Color(0xFF009DFF);
 
   bool get _isSetMode => widget.matchSetup.scoringSystem == 'Set';
   bool get _usesSetTracking => _isSetMode || _isDomino;
@@ -630,7 +630,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                                   fontWeight: FontWeight.w700,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Input angka kalah',
+                                  hintText: 'Input angka',
                                   hintStyle: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 12,
@@ -676,7 +676,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                                   fontWeight: FontWeight.w700,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Input angka kalah',
+                                  hintText: 'Input angka',
                                   hintStyle: const TextStyle(
                                     color: Colors.white70,
                                     fontSize: 12,
@@ -710,8 +710,8 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor,
                       foregroundColor: Colors.white,
-                      disabledBackgroundColor: Colors.grey.shade300,
-                      disabledForegroundColor: Colors.grey.shade600,
+                      disabledBackgroundColor: Colors.grey.shade800,
+                      disabledForegroundColor: Colors.grey.shade300,
                       elevation: 0,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(

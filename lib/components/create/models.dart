@@ -30,24 +30,24 @@ const sports = [
     description:
         'Olahraga raket di lapangan tertutup bertembok, perpaduan tenis dan squash yang dinamis.',
     iconAsset: 'assets/sports/padel.svg',
-    gradientColors: [Color(0xFF1A237E), Color(0xFF3949AB)],
-    accentColor: Color(0xFF82B1FF),
+    gradientColors: [Color(0xFFC2185B), Color(0xFFE91E63)],
+    accentColor: Color(0xFFF48FB1),
   ),
   Sport(
     name: 'Badminton',
     description:
         'Permainan bulu tangkis dengan shuttlecock yang membutuhkan kecepatan, kelincahan, dan strategi.',
     iconAsset: 'assets/sports/badminton.svg',
-    gradientColors: [Color(0xFF4A148C), Color(0xFF7B1FA2)],
-    accentColor: Color(0xFFEA80FC),
+    gradientColors: [Color(0xFF01579B), Color(0xFF0277BD)],
+    accentColor: Color(0xFF80DEEA),
   ),
   Sport(
     name: 'Domino',
     description:
         'Permainan strategi balok bernomor, mencocokkan angka untuk meraih kemenangan.',
     iconAsset: 'assets/sports/domino.svg',
-    gradientColors: [Color(0xFF7F0000), Color(0xFFD32F2F)],
-    accentColor: Color(0xFFFF8A80),
+    gradientColors: [Color(0xFFFF0000), Color(0xFFFF6B6B)],
+    accentColor: Color(0xFFFFCDD2),
   ),
   Sport(
     name: 'Tenis Meja',

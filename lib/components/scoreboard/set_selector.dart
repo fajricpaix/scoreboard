@@ -40,7 +40,7 @@ class SetSelector extends StatelessWidget {
                   onPressed: onAddSet,
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.zero,
-                    backgroundColor: Colors.white,
+                    backgroundColor: Color(0xFF121212),
                     foregroundColor: accentColor,
                     side: BorderSide(color: accentColor),
                     shape: RoundedRectangleBorder(
@@ -62,7 +62,7 @@ class SetSelector extends StatelessWidget {
               : rightPlayerColor;
           final backgroundColor = hasWinner
               ? winnerColor
-              : (selected ? accentColor : Colors.white);
+              : (selected ? accentColor : Color(0xFF121212));
           final foregroundColor = hasWinner || selected
               ? Colors.white
               : textColor;
