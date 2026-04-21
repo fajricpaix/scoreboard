@@ -42,6 +42,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   bool get _isDoubleMatch =>
       widget.matchSetup.gameType.toLowerCase().contains('ganda');
 
+    bool get _isDomino =>
+      widget.matchSetup.sport.name.toLowerCase().contains('domino');
+
   int get _requiredPlayerCount => _isDoubleMatch ? 4 : 2;
 
   bool get _canFinishTogether =>
@@ -245,7 +248,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       widget.matchSetup.leaderboardRankBy.toLowerCase().contains('point');
 
   bool get _canAddPlayer =>
-      isWordCountBetween1And10(_playerNameController.text);
+      !_isDomino && isWordCountBetween1And10(_playerNameController.text);
 
   List<Map<String, String>> get _sortedPlayers {
     final sorted = [..._players];
@@ -294,6 +297,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   }
 
   void _addPlayer() {
+    if (_isDomino) {
+      return;
+    }
+
     final rawName = _playerNameController.text.trim();
     if (!isWordCountBetween1And10(rawName)) {
       return;
@@ -382,19 +389,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                PlayerInputBar(
-                  controller: _playerNameController,
-                  selectedGender: _selectedGender,
-                  canAddPlayer: _canAddPlayer,
-                  accentColor: accentColor,
-                  onGenderSelected: (value) {
-                    setState(() {
-                      _selectedGender = value;
-                    });
-                  },
-                  onAddPlayer: _addPlayer,
-                ),
-                const SizedBox(height: 16),
+                if (!_isDomino) ...[
+                  PlayerInputBar(
+                    controller: _playerNameController,
+                    selectedGender: _selectedGender,
+                    canAddPlayer: _canAddPlayer,
+                    accentColor: accentColor,
+                    onGenderSelected: (value) {
+                      setState(() {
+                        _selectedGender = value;
+                      });
+                    },
+                    onAddPlayer: _addPlayer,
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 ...List.generate(sortedPlayers.length, (index) {
                   return LeaderboardPlayerTile(
                     rank: index + 1,

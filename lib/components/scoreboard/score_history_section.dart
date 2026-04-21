@@ -8,6 +8,10 @@ class ScoreHistorySection extends StatelessWidget {
   final bool hasSetTimer;
   final String setDurationText;
   final Color accentColor;
+  final String leftPlayerName;
+  final String rightPlayerName;
+  final Color leftPlayerColor;
+  final Color rightPlayerColor;
   final List<ScoreHistoryItem> items;
   final String Function(int score) scoreTextBuilder;
 
@@ -18,9 +22,45 @@ class ScoreHistorySection extends StatelessWidget {
     required this.hasSetTimer,
     required this.setDurationText,
     required this.accentColor,
+    required this.leftPlayerName,
+    required this.rightPlayerName,
+    required this.leftPlayerColor,
+    required this.rightPlayerColor,
     required this.items,
     required this.scoreTextBuilder,
   });
+
+  Color _backgroundColorFor(ScoreHistoryItem item) {
+    final note = item.note.toLowerCase();
+    final leftName = leftPlayerName.toLowerCase();
+    final rightName = rightPlayerName.toLowerCase();
+
+    if (note.startsWith(leftName) || note.contains('dimenangkan $leftName')) {
+      return leftPlayerColor.withAlpha(26);
+    }
+
+    if (note.startsWith(rightName) || note.contains('dimenangkan $rightName')) {
+      return rightPlayerColor.withAlpha(26);
+    }
+
+    return Colors.white;
+  }
+
+  Color _borderColorFor(ScoreHistoryItem item) {
+    final note = item.note.toLowerCase();
+    final leftName = leftPlayerName.toLowerCase();
+    final rightName = rightPlayerName.toLowerCase();
+
+    if (note.startsWith(leftName) || note.contains('dimenangkan $leftName')) {
+      return leftPlayerColor.withAlpha(76);
+    }
+
+    if (note.startsWith(rightName) || note.contains('dimenangkan $rightName')) {
+      return rightPlayerColor.withAlpha(76);
+    }
+
+    return const Color(0xFFE5E7EB);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +134,16 @@ class ScoreHistorySection extends StatelessWidget {
           ),
         if (items.isNotEmpty)
           ...items.map((item) {
+            final backgroundColor = _backgroundColorFor(item);
+            final borderColor = _borderColorFor(item);
+
             return Container(
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFFE5E7EB)),
+                border: Border.all(color: borderColor),
               ),
               child: Row(
                 children: [

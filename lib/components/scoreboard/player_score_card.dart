@@ -5,16 +5,18 @@ class PlayerScoreCard extends StatelessWidget {
   final String playerName;
   final String scoreText;
   final Color backgroundColor;
-  final VoidCallback onDecrease;
-  final VoidCallback onIncrease;
+  final VoidCallback? onDecrease;
+  final VoidCallback? onIncrease;
+  final Widget? footer;
 
   const PlayerScoreCard({
     super.key,
     required this.playerName,
     required this.scoreText,
     required this.backgroundColor,
-    required this.onDecrease,
-    required this.onIncrease,
+    this.onDecrease,
+    this.onIncrease,
+    this.footer,
   });
 
   Widget _scoreActionButton({
@@ -71,15 +73,20 @@ class PlayerScoreCard extends StatelessWidget {
               height: 1,
             ),
           ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _scoreActionButton(icon: Icons.remove, onTap: onDecrease),
-              const SizedBox(width: 8),
-              _scoreActionButton(icon: Icons.add, onTap: onIncrease),
-            ],
-          ),
+          if (footer != null) ...[
+            const SizedBox(height: 12),
+            footer!,
+          ] else if (onDecrease != null && onIncrease != null) ...[
+            const SizedBox(height: 10),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _scoreActionButton(icon: Icons.remove, onTap: onDecrease!),
+                const SizedBox(width: 8),
+                _scoreActionButton(icon: Icons.add, onTap: onIncrease!),
+              ],
+            ),
+          ],
         ],
       ),
     );

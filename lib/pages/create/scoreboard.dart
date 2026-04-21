@@ -17,6 +17,13 @@ class MatchResult {
   const MatchResult({required this.winnerNames, required this.loserNames});
 }
 
+class _SetScore {
+  final int leftScore;
+  final int rightScore;
+
+  const _SetScore({required this.leftScore, required this.rightScore});
+}
+
 class ScoreboardPage extends StatefulWidget {
   final MatchSetup matchSetup;
   final String leftPlayerName;
@@ -40,14 +47,21 @@ class ScoreboardPage extends StatefulWidget {
 }
 
 class _ScoreboardPageState extends State<ScoreboardPage> {
+  static const int _dominoTargetScore = 101;
+
   int _leftScore = 0;
   int _rightScore = 0;
   int _selectedSet = 1;
   late int _setCount;
   Timer? _ticker;
   DateTime? _matchFinishedAt;
+  final TextEditingController _leftDominoInputController =
+      TextEditingController();
+  final TextEditingController _rightDominoInputController =
+      TextEditingController();
 
   final List<ScoreHistoryItem> _history = [];
+  final Map<int, _SetScore> _setScores = {1: const _SetScore(leftScore: 0, rightScore: 0)};
   final Map<int, bool> _setWinners = {};
   final Map<int, Duration> _setDurations = {};
   final Map<int, DateTime> _setStartedAt = {};
@@ -56,6 +70,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   static const Color _rightPlayerColor = Color(0xFF233D4D);
 
   bool get _isSetMode => widget.matchSetup.scoringSystem == 'Set';
+  bool get _usesSetTracking => _isSetMode || _isDomino;
 
   bool get _usesTennisSequence {
     final sportName = widget.matchSetup.sport.name.toLowerCase();
@@ -67,7 +82,20 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     return sportName.contains('badminton');
   }
 
+  bool get _isDomino {
+    final sportName = widget.matchSetup.sport.name.toLowerCase();
+    return sportName.contains('domino');
+  }
+
+  bool get _isDominoResetMode =>
+      _isDomino &&
+      widget.matchSetup.dominoScoreMode.toLowerCase().contains('reset');
+
   bool get _canSetPoint {
+    if (_setWinners.containsKey(_selectedSet)) {
+      return false;
+    }
+
     if (_isBadminton) {
       return _isBadmintonSetWinner(_leftScore, _rightScore) ||
           _isBadmintonSetWinner(_rightScore, _leftScore);
@@ -107,7 +135,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   void initState() {
     super.initState();
     final target = widget.matchSetup.targetSets ?? 0;
-    _setCount = _isSetMode ? (target < 2 ? 2 : target) : 1;
+    _setCount = _usesSetTracking ? (target < 2 ? 2 : target) : 1;
     _setStartedAt[1] = widget.startedAt;
     _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!mounted || _matchFinishedAt != null) {
@@ -121,11 +149,13 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   @override
   void dispose() {
     _ticker?.cancel();
+    _leftDominoInputController.dispose();
+    _rightDominoInputController.dispose();
     super.dispose();
   }
 
   List<ScoreHistoryItem> get _visibleHistory {
-    if (!_isSetMode) {
+    if (!_usesSetTracking) {
       return _history;
     }
     return _history.where((item) => item.setNumber == _selectedSet).toList();
@@ -140,7 +170,10 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   bool get _hasMatchWinner => _leftSetWins != _rightSetWins;
 
   bool get _canFinalizeMatch =>
-      _isMatchFinished && _matchFinishedAt == null && _hasMatchWinner;
+      _matchFinishedAt == null &&
+      _usesSetTracking &&
+      _isMatchFinished &&
+      _hasMatchWinner;
 
   String _formatDuration(Duration duration) {
     final totalSeconds = duration.inSeconds;
@@ -174,7 +207,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   }
 
   String _scoreText(int score) {
-    if (!_usesTennisSequence) {
+    if (_isDomino || !_usesTennisSequence) {
       return '$score';
     }
 
@@ -190,6 +223,126 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       default:
         return 'AD';
     }
+  }
+
+  int _parseDominoInput(TextEditingController controller) {
+    final text = controller.text.trim();
+    if (text.isEmpty) {
+      return 0;
+    }
+
+    return int.tryParse(text) ?? -1;
+  }
+
+  void _persistCurrentSetScore() {
+    _setScores[_selectedSet] = _SetScore(
+      leftScore: _leftScore,
+      rightScore: _rightScore,
+    );
+  }
+
+  void _loadSetScore(int setNumber) {
+    final setScore = _setScores[setNumber] ??
+        const _SetScore(leftScore: 0, rightScore: 0);
+    _leftScore = setScore.leftScore;
+    _rightScore = setScore.rightScore;
+  }
+
+  void _completeCurrentSet({required bool leftWins, required String note}) {
+    final now = DateTime.now();
+    _persistCurrentSetScore();
+    _setWinners[_selectedSet] = leftWins;
+    _setDurations[_selectedSet] = now.difference(
+      _setStartedAt[_selectedSet] ?? widget.startedAt,
+    );
+    _appendHistory(note);
+
+    final nextSet = _selectedSet + 1;
+    if (nextSet <= _setCount) {
+      _setStartedAt.putIfAbsent(nextSet, () => now);
+      _setScores.putIfAbsent(
+        nextSet,
+        () => const _SetScore(leftScore: 0, rightScore: 0),
+      );
+      _selectedSet = nextSet;
+      _loadSetScore(nextSet);
+    }
+  }
+
+  void _applyDominoRoundScore() {
+    if (_matchFinishedAt != null || _setWinners.containsKey(_selectedSet)) {
+      return;
+    }
+
+    final leftAdded = _parseDominoInput(_leftDominoInputController);
+    final rightAdded = _parseDominoInput(_rightDominoInputController);
+
+    if (leftAdded < 0 || rightAdded < 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Masukkan angka yang valid untuk skor domino.')),
+      );
+      return;
+    }
+
+    final hasLeftInput = leftAdded > 0;
+    final hasRightInput = rightAdded > 0;
+
+    if (hasLeftInput == hasRightInput) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Masukkan skor hanya untuk tim yang kalah pada ronde ini.'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      if (hasLeftInput) {
+        final previousRightScore = _rightScore;
+        final nextLeftScore = (_leftScore + leftAdded).clamp(0, _dominoTargetScore);
+        final shouldResetRight = _isDominoResetMode && nextLeftScore > previousRightScore;
+
+        _leftScore = nextLeftScore;
+        if (shouldResetRight) {
+          _rightScore = 0;
+        }
+        _persistCurrentSetScore();
+        _appendHistory(
+          shouldResetRight
+              ? '${widget.leftPlayerName} +$leftAdded (reset ${widget.rightPlayerName})'
+              : '${widget.leftPlayerName} +$leftAdded',
+        );
+      } else {
+        final previousLeftScore = _leftScore;
+        final nextRightScore = (_rightScore + rightAdded).clamp(0, _dominoTargetScore);
+        final shouldResetLeft = _isDominoResetMode && nextRightScore > previousLeftScore;
+
+        _rightScore = nextRightScore;
+        if (shouldResetLeft) {
+          _leftScore = 0;
+        }
+        _persistCurrentSetScore();
+        _appendHistory(
+          shouldResetLeft
+              ? '${widget.rightPlayerName} +$rightAdded (reset ${widget.leftPlayerName})'
+              : '${widget.rightPlayerName} +$rightAdded',
+        );
+      }
+
+      final leftReachedTarget = _leftScore >= _dominoTargetScore;
+      final rightReachedTarget = _rightScore >= _dominoTargetScore;
+
+      if (leftReachedTarget || rightReachedTarget) {
+        _completeCurrentSet(
+          leftWins: rightReachedTarget,
+          note:
+              'Set $_selectedSet dimenangkan ${rightReachedTarget ? widget.leftPlayerName : widget.rightPlayerName}',
+        );
+      }
+
+      _leftDominoInputController.clear();
+      _rightDominoInputController.clear();
+    });
   }
 
   bool _applyScoreChange({required bool left, required int delta}) {
@@ -246,6 +399,8 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
       _leftScore = opp;
     }
 
+    _persistCurrentSetScore();
+
     return true;
   }
 
@@ -256,7 +411,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
         leftScore: _leftScore,
         rightScore: _rightScore,
         note: note,
-        setNumber: _isSetMode ? _selectedSet : null,
+        setNumber: _usesSetTracking ? _selectedSet : null,
       ),
     );
   }
@@ -299,33 +454,33 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     }
 
     setState(() {
-      final now = DateTime.now();
       final leftWins = _leftScore > _rightScore;
-      _setWinners[_selectedSet] = leftWins;
-      _setDurations[_selectedSet] = now.difference(
-        _setStartedAt[_selectedSet] ?? widget.startedAt,
-      );
-      _setStartedAt.putIfAbsent(_selectedSet + 1, () => now);
-      _appendHistory(
-        'Set $_selectedSet dimenangkan ${leftWins ? widget.leftPlayerName : widget.rightPlayerName}',
+      _completeCurrentSet(
+        leftWins: leftWins,
+        note:
+            'Set $_selectedSet dimenangkan ${leftWins ? widget.leftPlayerName : widget.rightPlayerName}',
       );
     });
   }
 
   bool get _isMatchFinished {
-    if (!_isSetMode) {
+    if (!_usesSetTracking) {
       return false;
     }
     return _setWinners.length >= _setCount;
   }
 
   void _addCustomSet() {
-    if (!_isSetMode) {
+    if (!_usesSetTracking) {
       return;
     }
 
     setState(() {
       _setCount += 1;
+      _setScores.putIfAbsent(
+        _setCount,
+        () => const _SetScore(leftScore: 0, rightScore: 0),
+      );
     });
   }
 
@@ -351,7 +506,9 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
             style: TextStyle(color: textColor, fontWeight: FontWeight.w700),
           ),
           content: Text(
-            'Durasi total pertandingan ${_formatDuration(_matchDuration)}. Setelah dikonfirmasi, timer pertandingan akan berhenti.',
+            _isDomino
+                ? 'Skor akhir ${widget.leftPlayerName} $_leftScore - $_rightScore ${widget.rightPlayerName}. Setelah dikonfirmasi, timer pertandingan akan berhenti.'
+                : 'Durasi total pertandingan ${_formatDuration(_matchDuration)}. Setelah dikonfirmasi, timer pertandingan akan berhenti.',
             style: const TextStyle(color: textColor, height: 1.4),
           ),
           actions: [
@@ -418,7 +575,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                   gradientColors: widget.matchSetup.sport.gradientColors,
                 ),
 
-                if (_isSetMode) ...[
+                if (_usesSetTracking) ...[
                   const SizedBox(height: 12),
                   SetScoreSummary(
                     leftSetWins: _leftSetWins,
@@ -435,8 +592,43 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                         playerName: widget.leftPlayerName,
                         scoreText: _scoreText(_leftScore),
                         backgroundColor: _leftPlayerColor,
-                        onDecrease: () => _changeLeftScore(-1),
-                        onIncrease: () => _changeLeftScore(1),
+                        onDecrease: (_isDomino || _setWinners.containsKey(_selectedSet))
+                          ? null
+                          : () => _changeLeftScore(-1),
+                        onIncrease: (_isDomino || _setWinners.containsKey(_selectedSet))
+                          ? null
+                          : () => _changeLeftScore(1),
+                        footer: _isDomino
+                            ? TextField(
+                                controller: _leftDominoInputController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                            enabled: _matchFinishedAt == null &&
+                              !_setWinners.containsKey(_selectedSet),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Input angka kalah',
+                                  hintStyle: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.14),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              )
+                            : null,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -445,8 +637,43 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                         playerName: widget.rightPlayerName,
                         scoreText: _scoreText(_rightScore),
                         backgroundColor: _rightPlayerColor,
-                        onDecrease: () => _changeRightScore(-1),
-                        onIncrease: () => _changeRightScore(1),
+                        onDecrease: (_isDomino || _setWinners.containsKey(_selectedSet))
+                          ? null
+                          : () => _changeRightScore(-1),
+                        onIncrease: (_isDomino || _setWinners.containsKey(_selectedSet))
+                          ? null
+                          : () => _changeRightScore(1),
+                        footer: _isDomino
+                            ? TextField(
+                                controller: _rightDominoInputController,
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                            enabled: _matchFinishedAt == null &&
+                              !_setWinners.containsKey(_selectedSet),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Input angka kalah',
+                                  hintStyle: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white.withOpacity(0.14),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 12,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                ),
+                              )
+                            : null,
                       ),
                     ),
                   ],
@@ -456,7 +683,9 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _canSetPoint ? _setPoint : null,
+                    onPressed: _isDomino
+                        ? (_matchFinishedAt == null ? _applyDominoRoundScore : null)
+                        : (_canSetPoint ? _setPoint : null),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: accentColor,
                       foregroundColor: Colors.white,
@@ -468,15 +697,30 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                     ),
-                    child: const Text(
-                      'Set Point',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                    child: Text(
+                      _isDomino ? 'Simpan Skor Ronde' : 'Set Point',
+                      style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
+                if (_isDomino) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    _setWinners.containsKey(_selectedSet)
+                        ? 'Set ini sudah selesai. Pindah ke set lain atau tambah set baru jika diperlukan.'
+                        : (_isDominoResetMode
+                              ? 'Mode Reset Angka aktif. Saat Anda input skor untuk satu tim, skor tim lawan otomatis kembali ke 0, lalu skor baru ditambahkan. Tim yang mencapai 101 dinyatakan kalah.'
+                              : 'Skor dimulai dari 0 - 0. Isi angka tim yang kalah pada ronde ini, lalu skor akan otomatis ditambahkan ke total sebelumnya. Tim yang mencapai 101 dinyatakan kalah.'),
+                    style: const TextStyle(
+                      color: Colors.black54,
+                      fontSize: 12,
+                      height: 1.45,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 20),
 
-                if (_isSetMode) ...[
+                if (_usesSetTracking) ...[
                   SetSelector(
                     setCount: _setCount,
                     selectedSet: _selectedSet,
@@ -487,28 +731,33 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                     onAddSet: _addCustomSet,
                     onSelectSet: (setNumber) {
                       setState(() {
-                        if (_selectedSet != setNumber) {
-                          _leftScore = 0;
-                          _rightScore = 0;
-                        }
                         _setStartedAt.putIfAbsent(
                           setNumber,
                           () => DateTime.now(),
                         );
+                        _setScores.putIfAbsent(
+                          setNumber,
+                          () => const _SetScore(leftScore: 0, rightScore: 0),
+                        );
                         _selectedSet = setNumber;
+                        _loadSetScore(setNumber);
                       });
                     },
                   ),
                   const SizedBox(height: 14),
                 ],
                 ScoreHistorySection(
-                  isSetMode: _isSetMode,
+                  isSetMode: _usesSetTracking,
                   selectedSet: _selectedSet,
                   hasSetTimer: _setStartedAt.containsKey(_selectedSet),
                   setDurationText: _formatDuration(
                     _setDurationFor(_selectedSet),
                   ),
                   accentColor: accentColor,
+                  leftPlayerName: widget.leftPlayerName,
+                  rightPlayerName: widget.rightPlayerName,
+                  leftPlayerColor: _leftPlayerColor,
+                  rightPlayerColor: _rightPlayerColor,
                   items: _visibleHistory,
                   scoreTextBuilder: _scoreText,
                 ),

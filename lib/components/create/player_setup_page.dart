@@ -25,9 +25,14 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
   final List<dynamic> _players = [];
   String _selectedGender = 'Pria';
 
+  bool get _isDomino =>
+      widget.matchSetup.sport.name.toLowerCase().contains('domino');
+
   bool get _canAddPlayer =>
-      isWordCountBetween1And10(_playerNameController.text);
-  bool get _canGoToScoreboard => _players.length >= 2;
+      isWordCountBetween1And10(_playerNameController.text) &&
+      (!_isDomino || _players.length < 4);
+  bool get _canGoToScoreboard =>
+      _isDomino ? _players.length == 4 : _players.length >= 2;
 
   @override
   void initState() {
@@ -238,9 +243,11 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
-                  'Tambahkan nama pemain satu per satu, lalu cek daftar pemain di bawah.',
-                  style: TextStyle(
+                Text(
+                  _isDomino
+                      ? 'Domino membutuhkan tepat 4 pemain.'
+                      : 'Tambahkan nama pemain satu per satu, lalu cek daftar pemain di bawah.',
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 12,
                     height: 1.4,

@@ -18,6 +18,7 @@ class LeaderboardPlayerTile extends StatelessWidget {
     final isMale = (player['gender'] ?? 'Pria') == 'Pria';
     final name = player['name'] ?? '-';
     final point = player['point'] ?? '0';
+    final play = player['play'] ?? '0';
     final win = player['win'] ?? '0';
     final lose = player['lose'] ?? '0';
 
@@ -86,6 +87,14 @@ class LeaderboardPlayerTile extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Text(
+                    'Main: $play • ',
+                    style: const TextStyle(
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                    ),
+                  ),
                   Text(
                     'Win: $win •',
                     style: const TextStyle(

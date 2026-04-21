@@ -62,8 +62,8 @@ class SportCard extends StatelessWidget {
                       sport.iconAsset,
                       width: 32,
                       height: 32,
-                      colorFilter: ColorFilter.mode(
-                        sport.accentColor,
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
                         BlendMode.srcIn,
                       ),
                     ),

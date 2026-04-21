@@ -19,18 +19,24 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
 
   String? _selectedGameType;
   String? _selectedLeaderboardRank;
+  String? _selectedDominoScoreMode;
 
   bool get _isPadel => widget.sport.name.toLowerCase().contains('padel');
+  bool get _isDomino => widget.sport.name.toLowerCase().contains('domino');
 
   List<String> get _availableGameTypes =>
-      _isPadel ? const ['Ganda'] : gameTypes;
+      (_isPadel || _isDomino) ? const ['Ganda'] : gameTypes;
+
+  List<String> get _availableLeaderboardRanks =>
+      _isDomino ? const ['Kemenangan'] : leaderboardRankOptions;
 
   bool get _isFormComplete {
     final matchName = _matchNameController.text.trim();
 
     return isWordCountBetween1And10(matchName) &&
         _selectedGameType != null &&
-        _selectedLeaderboardRank != null;
+      _selectedLeaderboardRank != null &&
+      (!_isDomino || _selectedDominoScoreMode != null);
   }
 
   bool get _usesSetSystem {
@@ -43,8 +49,12 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
   @override
   void initState() {
     super.initState();
-    if (_isPadel) {
+    if (_isPadel || _isDomino) {
       _selectedGameType = 'Ganda';
+    }
+    if (_isDomino) {
+      _selectedLeaderboardRank = 'Kemenangan';
+      _selectedDominoScoreMode = dominoScoreModeOptions.first;
     }
     _matchNameController.addListener(_onFormChanged);
   }
@@ -70,8 +80,9 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       sport: widget.sport,
       matchName: capitalizeWords(_matchNameController.text),
       gameType: _selectedGameType!,
+      dominoScoreMode: _selectedDominoScoreMode ?? dominoScoreModeOptions.first,
       scoringSystem: _usesSetSystem ? 'Set' : 'Points',
-      targetPoints: _usesSetSystem ? null : 21,
+      targetPoints: _usesSetSystem ? null : (_isDomino ? 101 : 21),
       targetSets: _usesSetSystem ? 2 : null,
       leaderboardRankBy: _selectedLeaderboardRank!,
     );
@@ -168,6 +179,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
     required String label,
     required bool selected,
     required VoidCallback onTap,
+    bool locked = false,
   }) {
     final toggleColor = widget.sport.gradientColors[0];
 
@@ -175,7 +187,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
+        onTap: locked ? null : onTap,
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
@@ -183,14 +195,23 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: toggleColor, width: 1.3),
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: selected ? Colors.white : toggleColor,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: selected ? Colors.white : toggleColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              if (locked) ...[
+                const SizedBox(width: 6),
+                Icon(Icons.lock_rounded, size: 13, color: selected ? Colors.white70 : toggleColor),
+              ],
+            ],
           ),
         ),
       ),
@@ -240,6 +261,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                         Container(
                           width: 56,
                           height: 56,
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             // ignore: deprecated_member_use
                             color: Colors.white.withOpacity(0.14),
@@ -249,8 +271,8 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                             widget.sport.iconAsset,
                             width: 30,
                             height: 30,
-                            colorFilter: ColorFilter.mode(
-                              widget.sport.gradientColors[0],
+                            colorFilter: const ColorFilter.mode(
+                              Colors.white,
                               BlendMode.srcIn,
                             ),
                           ),
@@ -321,9 +343,8 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                                 width: itemWidth,
                                 child: _buildToggleButton(
                                   label: _availableGameTypes[i],
-                                  selected:
-                                      _selectedGameType ==
-                                      _availableGameTypes[i],
+                                  selected: _selectedGameType == _availableGameTypes[i],
+                                  locked: _availableGameTypes.length == 1,
                                   onTap: () {
                                     setState(() {
                                       _selectedGameType =
@@ -344,7 +365,9 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         const spacing = 10.0;
-                        final itemWidth = (constraints.maxWidth - spacing) / 2;
+                        final itemWidth = _availableLeaderboardRanks.length == 1
+                            ? constraints.maxWidth
+                            : (constraints.maxWidth - spacing) / 2;
 
                         return Wrap(
                           spacing: spacing,
@@ -352,20 +375,19 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                           children: [
                             for (
                               int i = 0;
-                              i < leaderboardRankOptions.length;
+                              i < _availableLeaderboardRanks.length;
                               i++
                             )
                               SizedBox(
                                 width: itemWidth,
                                 child: _buildToggleButton(
-                                  label: leaderboardRankOptions[i],
-                                  selected:
-                                      _selectedLeaderboardRank ==
-                                      leaderboardRankOptions[i],
+                                  label: _availableLeaderboardRanks[i],
+                                  selected: _selectedLeaderboardRank == _availableLeaderboardRanks[i],
+                                  locked: _availableLeaderboardRanks.length == 1,
                                   onTap: () {
                                     setState(() {
                                       _selectedLeaderboardRank =
-                                          leaderboardRankOptions[i];
+                                          _availableLeaderboardRanks[i];
                                     });
                                   },
                                 ),
@@ -375,6 +397,42 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                       },
                     ),
                   ),
+                  if (_isDomino)
+                    _buildSection(
+                      title: 'Mode Skor Domino',
+                      subtitle:
+                          'Biasa: skor tim hanya ditambah. Reset Angka: saat tim lawan diinput, skor tim sebelumnya otomatis jadi 0.',
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          const spacing = 10.0;
+                          final itemWidth =
+                              (constraints.maxWidth - spacing) / 2;
+
+                          return Wrap(
+                            spacing: spacing,
+                            runSpacing: spacing,
+                            children: [
+                              for (int i = 0; i < dominoScoreModeOptions.length; i++)
+                                SizedBox(
+                                  width: itemWidth,
+                                  child: _buildToggleButton(
+                                    label: dominoScoreModeOptions[i],
+                                    selected:
+                                        _selectedDominoScoreMode ==
+                                        dominoScoreModeOptions[i],
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedDominoScoreMode =
+                                            dominoScoreModeOptions[i];
+                                      });
+                                    },
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
