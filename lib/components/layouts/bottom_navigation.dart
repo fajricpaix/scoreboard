@@ -24,26 +24,27 @@ class BottomNavigation extends StatelessWidget {
         ],
       ),
       child: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 28),
-            label: '',
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 28),
-            label: '',
+            label: 'Home',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.history, size: 28),
-            label: '',
+            label: 'Riwayat',
           ),
         ],
         currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,
         backgroundColor: Theme.of(context).colorScheme.surface,
         unselectedItemColor: Colors.grey,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        unselectedIconTheme: const IconThemeData(color: Colors.grey),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         onTap: onItemTapped,
       ),
     );
