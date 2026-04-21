@@ -10,9 +10,11 @@ class AutoCarousel extends StatefulWidget {
 
 class _AutoCarouselState extends State<AutoCarousel> {
   static const _images = [
-    'https://picsum.photos/400/180?random=1',
-    'https://picsum.photos/400/180?random=2',
-    'https://picsum.photos/400/180?random=3',
+    'assets/banners/1.webp',
+    'assets/banners/2.webp',
+    'assets/banners/3.webp',
+    'assets/banners/4.webp',
+    'assets/banners/5.webp',
   ];
 
   // Offset besar agar bisa scroll ke dua arah secara "infinite"
@@ -54,8 +56,8 @@ class _AutoCarouselState extends State<AutoCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
+    return AspectRatio(
+      aspectRatio: 11 / 6,
       child: PageView.builder(
         controller: _controller,
         itemBuilder: (context, index) {
@@ -69,7 +71,7 @@ class _AutoCarouselState extends State<AutoCarousel> {
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.network(_images[imgIndex], fit: BoxFit.cover),
+                child: Image.asset(_images[imgIndex], fit: BoxFit.cover),
               ),
             ),
           );
