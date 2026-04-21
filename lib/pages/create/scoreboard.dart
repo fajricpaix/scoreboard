@@ -636,6 +636,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                                     fontSize: 12,
                                   ),
                                   filled: true,
+                                  // ignore: deprecated_member_use
                                   fillColor: Colors.white.withOpacity(0.14),
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -681,6 +682,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                                     fontSize: 12,
                                   ),
                                   filled: true,
+                                  // ignore: deprecated_member_use
                                   fillColor: Colors.white.withOpacity(0.14),
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 12,

@@ -26,24 +26,15 @@ class BottomNavigation extends StatelessWidget {
       child: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 28,
-              ),
+            icon: Icon(Icons.home, size: 28),
             label: '',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person,
-              size: 28,
-              ),
+            icon: Icon(Icons.person, size: 28),
             label: '',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.history,
-              size: 28,
-              ),
+            icon: Icon(Icons.history, size: 28),
             label: '',
           ),
         ],

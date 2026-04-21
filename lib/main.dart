@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:scoreboard/components/utils/ads.dart';
 import 'theme/index.dart';
 import 'pages/home/index.dart';
 import 'pages/history/index.dart';
 import 'pages/user/index.dart';
 import 'components/layouts/bottom_navigation.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppAds.initialize();
   runApp(const MyApp());
 }
 
@@ -78,8 +81,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               child: IconButton(
                 icon: const Icon(Icons.notifications, color: Colors.white),
-                onPressed: () {
-                },
+                onPressed: () {},
                 tooltip: 'Notifikasi',
               ),
             ),
