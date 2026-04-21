@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoreboard/components/create/models.dart';
 import 'package:scoreboard/components/create/player_setup_page.dart';
 import 'package:scoreboard/theme/index.dart';
@@ -244,10 +245,14 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                             color: Colors.white.withOpacity(0.14),
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Icon(
-                            widget.sport.icon,
-                            color: widget.sport.gradientColors[0],
-                            size: 30,
+                          child: SvgPicture.asset(
+                            widget.sport.iconAsset,
+                            width: 30,
+                            height: 30,
+                            colorFilter: ColorFilter.mode(
+                              widget.sport.gradientColors[0],
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 14),

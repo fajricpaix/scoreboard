@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class Sport {
   final String name;
   final String description;
-  final IconData icon;
+  final String iconAsset;
   final List<Color> gradientColors;
   final Color accentColor;
 
   const Sport({
     required this.name,
     required this.description,
-    required this.icon,
+    required this.iconAsset,
     required this.gradientColors,
     required this.accentColor,
   });
@@ -21,7 +21,7 @@ const sports = [
     name: 'Tenis',
     description:
         'Permainan raket satu lawan satu di lapangan dengan net, menggunakan bola karet bertennis.',
-    icon: Icons.sports_tennis,
+    iconAsset: 'assets/sports/tennis.svg',
     gradientColors: [Color(0xFF0D7377), Color(0xFF14A085)],
     accentColor: Color(0xFF3FFFD1),
   ),
@@ -29,7 +29,7 @@ const sports = [
     name: 'Padel',
     description:
         'Olahraga raket di lapangan tertutup bertembok, perpaduan tenis dan squash yang dinamis.',
-    icon: Icons.sports_tennis,
+    iconAsset: 'assets/sports/padel.svg',
     gradientColors: [Color(0xFF1A237E), Color(0xFF3949AB)],
     accentColor: Color(0xFF82B1FF),
   ),
@@ -37,7 +37,7 @@ const sports = [
     name: 'Badminton',
     description:
         'Permainan bulu tangkis dengan shuttlecock yang membutuhkan kecepatan, kelincahan, dan strategi.',
-    icon: Icons.sports_esports_outlined,
+    iconAsset: 'assets/sports/badminton.svg',
     gradientColors: [Color(0xFF4A148C), Color(0xFF7B1FA2)],
     accentColor: Color(0xFFEA80FC),
   ),

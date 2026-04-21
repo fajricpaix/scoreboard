@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoreboard/components/create/models.dart';
 import 'package:scoreboard/components/create/match_setup_page.dart';
 
@@ -46,6 +47,7 @@ class SportCard extends StatelessWidget {
                   Container(
                     width: 60,
                     height: 60,
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       // ignore: deprecated_member_use
                       color: Colors.white.withOpacity(0.12),
@@ -56,7 +58,15 @@ class SportCard extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    child: Icon(sport.icon, color: sport.accentColor, size: 32),
+                    child: SvgPicture.asset(
+                      sport.iconAsset,
+                      width: 32,
+                      height: 32,
+                      colorFilter: ColorFilter.mode(
+                        sport.accentColor,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                   const SizedBox(width: 14),
                   // Text section
