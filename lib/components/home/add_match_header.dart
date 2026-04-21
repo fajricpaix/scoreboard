@@ -28,6 +28,11 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
       1.0,
     );
     final double descOpacity = 1.0 - progress;
+    final double iconBoxSize = 60 - (14 * progress);
+    final double iconBoxRadius = 14 - (4 * progress);
+    final double iconSize = 38 - (12 * progress);
+    final double iconTextGap = 14 - (4 * progress);
+    final double contentVerticalPadding = 14 - (6 * progress);
 
     return Material(
       color: Theme.of(context).primaryColor,
@@ -56,18 +61,18 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 14,
+                  vertical: contentVerticalPadding,
                 ),
                 child: Row(
                   children: [
                     Container(
-                      width: 60,
-                      height: 60,
+                      width: iconBoxSize,
+                      height: iconBoxSize,
                       decoration: BoxDecoration(
                         color: Colors.white.withAlpha(31),
-                        borderRadius: BorderRadius.circular(14),
+                        borderRadius: BorderRadius.circular(iconBoxRadius),
                         border: Border.all(
                           color: Colors.white.withAlpha(128),
                           width: 1.5,
@@ -75,11 +80,11 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
                       ),
                       child: Icon(
                         Icons.add_circle_outline,
-                        size: 38 - (12 * progress),
+                        size: iconSize,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(width: 14),
+                    SizedBox(width: iconTextGap),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
