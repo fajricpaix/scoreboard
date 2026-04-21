@@ -118,8 +118,13 @@ class _NewsImagePlaceholder extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      color: const Color(0xFFF3F4F6),
-      child: Icon(Icons.image_outlined, color: Theme.of(context).primaryColor),
+      decoration: BoxDecoration(
+        color: const Color(0xFF111827),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: const Center(
+        child: Icon(Icons.image_outlined, color: Colors.white70),
+      ),
     );
   }
 }

@@ -46,7 +46,7 @@ class AppBannerAd extends StatefulWidget {
     super.key,
     this.padding = const EdgeInsets.fromLTRB(16, 0, 16, 24),
     this.showSponsoredLabel = true,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = const Color(0xFF121212),
   });
 
   @override
