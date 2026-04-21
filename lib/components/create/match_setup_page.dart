@@ -41,7 +41,9 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
 
   bool get _usesSetSystem {
     final sportName = widget.sport.name.toLowerCase();
+    final isTableTennis = sportName.contains('tenis meja');
     return sportName.contains('tenis') ||
+      isTableTennis ||
         sportName.contains('padel') ||
         sportName.contains('badminton');
   }

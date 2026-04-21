@@ -74,12 +74,18 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
   bool get _usesTennisSequence {
     final sportName = widget.matchSetup.sport.name.toLowerCase();
-    return sportName.contains('tenis') || sportName.contains('padel');
+    return (sportName.contains('tenis') && !sportName.contains('tenis meja')) ||
+        sportName.contains('padel');
   }
 
   bool get _isBadminton {
     final sportName = widget.matchSetup.sport.name.toLowerCase();
     return sportName.contains('badminton');
+  }
+
+  bool get _isTableTennis {
+    final sportName = widget.matchSetup.sport.name.toLowerCase();
+    return sportName.contains('tenis meja');
   }
 
   bool get _isDomino {
@@ -99,6 +105,11 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     if (_isBadminton) {
       return _isBadmintonSetWinner(_leftScore, _rightScore) ||
           _isBadmintonSetWinner(_rightScore, _leftScore);
+    }
+
+    if (_isTableTennis) {
+      return _isTableTennisSetWinner(_leftScore, _rightScore) ||
+          _isTableTennisSetWinner(_rightScore, _leftScore);
     }
 
     if (!_usesTennisSequence) {
@@ -125,6 +136,14 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     }
 
     if (score < 21) {
+      return false;
+    }
+
+    return score - opponentScore >= 2;
+  }
+
+  bool _isTableTennisSetWinner(int score, int opponentScore) {
+    if (score < 11) {
       return false;
     }
 
