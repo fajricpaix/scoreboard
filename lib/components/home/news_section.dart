@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoreboard/components/home/news_api_service.dart';
 import 'package:scoreboard/components/home/news_card.dart';
 import 'package:scoreboard/pages/home/news/read.dart';
-import 'package:scoreboard/theme/index.dart';
+// ignore: library_prefixes
 import 'package:scoreboard/theme/index.dart' as AppTheme;
 
 class NewsSection extends StatefulWidget {
