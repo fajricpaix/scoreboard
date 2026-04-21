@@ -28,11 +28,11 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
       1.0,
     );
     final double descOpacity = 1.0 - progress;
-    final double iconBoxSize = 60 - (14 * progress);
+    final double iconBoxSize = 60 - (20 * progress);
     final double iconBoxRadius = 14 - (4 * progress);
-    final double iconSize = 38 - (12 * progress);
-    final double iconTextGap = 14 - (4 * progress);
-    final double contentVerticalPadding = 14 - (6 * progress);
+    final double iconSize = 38 - (14 * progress);
+    final double iconTextGap = 14 - (6 * progress);
+    final double contentVerticalPadding = 14 - (8 * progress);
 
     return Material(
       color: Theme.of(context).primaryColor,
@@ -46,10 +46,15 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Ink(
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.orange, Colors.orange.withAlpha(209)],
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF0B1E3A), Color(0xFF102A52)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
+                ),
+                image: const DecorationImage(
+                  image: AssetImage('assets/icon/match.webp'),
+                  fit: BoxFit.cover,
+                  opacity: 0.3
                 ),
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
@@ -95,14 +100,14 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 17,
                               letterSpacing: 0.3,
                             ),
                           ),
-                          if (descOpacity > 0) ...[
+                          if (descOpacity > 0.35) ...[
                             const SizedBox(height: 4),
                             Opacity(
-                              opacity: descOpacity,
+                              opacity: (descOpacity - 0.35) / 0.65,
                               child: Text(
                                 'Buat pertandingan baru dan jangan lupa untuk mengundang temanmu!',
                                 style: TextStyle(

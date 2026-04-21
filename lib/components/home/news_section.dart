@@ -7,7 +7,7 @@ import 'package:scoreboard/theme/index.dart';
 class NewsSection extends StatefulWidget {
   final int itemCount;
 
-  const NewsSection({super.key, this.itemCount = 5});
+  const NewsSection({super.key, this.itemCount = 8});
 
   @override
   State<NewsSection> createState() => _NewsSectionState();
