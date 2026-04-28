@@ -1,3 +1,10 @@
+class MatchResult {
+  final List<String> winnerNames;
+  final List<String> loserNames;
+
+  const MatchResult({required this.winnerNames, required this.loserNames});
+}
+
 class ScoreHistoryItem {
   final int leftScore;
   final int rightScore;
