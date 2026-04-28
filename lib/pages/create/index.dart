@@ -24,7 +24,15 @@ class CreateMatchPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/icon/match_vendor.webp',
+              fit: BoxFit.cover,
+            ),
+          ),
+          ListView(
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
         children: [
           const Text(
@@ -38,6 +46,8 @@ class CreateMatchPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           ...sports.map((sport) => SportCard(sport: sport)),
+        ],
+      ),
         ],
       ),
     );

@@ -41,7 +41,7 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(12),
             onTap: onTap,
             child: Ink(
               width: double.infinity,
@@ -56,7 +56,7 @@ class AddMatchHeaderDelegate extends SliverPersistentHeaderDelegate {
                   fit: BoxFit.cover,
                   opacity: 0.3
                 ),
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
                     color: primaryColor.withAlpha(115),

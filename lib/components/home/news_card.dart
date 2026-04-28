@@ -19,7 +19,7 @@ class NewsCard extends StatelessWidget {
           onTap: onTap,
           child: Ink(
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Colors.grey[900],
               borderRadius: BorderRadius.circular(8),
               boxShadow: const [
                 BoxShadow(
