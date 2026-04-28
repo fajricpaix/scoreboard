@@ -8,9 +8,21 @@ class SportCard extends StatelessWidget {
 
   const SportCard({super.key, required this.sport});
 
+  void _openMatchSetup(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => MatchSetupPage(sport: sport)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(18);
+    final gradientColors = sport.gradientColors;
+    final shadowColor = gradientColors.last.withValues(alpha: 0.45);
+    final iconBackgroundColor = Colors.white.withValues(alpha: 0.12);
+    final iconBorderColor = sport.accentColor.withValues(alpha: 0.5);
+    final descriptionColor = Colors.white.withValues(alpha: 0.7);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -19,8 +31,7 @@ class SportCard extends StatelessWidget {
           borderRadius: borderRadius,
           boxShadow: [
             BoxShadow(
-              // ignore: deprecated_member_use
-              color: sport.gradientColors.last.withOpacity(0.45),
+              color: shadowColor,
               blurRadius: 18,
               offset: const Offset(0, 4),
               spreadRadius: 0,
@@ -33,23 +44,21 @@ class SportCard extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             borderRadius: borderRadius,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => MatchSetupPage(sport: sport)),
-              );
-            },
+            onTap: () => _openMatchSetup(context),
             child: Ink(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: sport.gradientColors,
+                  colors: gradientColors,
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: borderRadius,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
                 child: Row(
                   children: [
                     // Icon bubble
@@ -58,14 +67,9 @@ class SportCard extends StatelessWidget {
                       height: 60,
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.white.withOpacity(0.12),
+                        color: iconBackgroundColor,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          // ignore: deprecated_member_use
-                          color: sport.accentColor.withOpacity(0.5),
-                          width: 1.5,
-                        ),
+                        border: Border.all(color: iconBorderColor, width: 1.5),
                       ),
                       child: SvgPicture.asset(
                         sport.iconAsset,
@@ -98,8 +102,7 @@ class SportCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              // ignore: deprecated_member_use
-                              color: Colors.white.withOpacity(0.7),
+                              color: descriptionColor,
                               fontSize: 12,
                             ),
                           ),

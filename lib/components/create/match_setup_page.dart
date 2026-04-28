@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:scoreboard/components/create/create_background.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scoreboard/components/create/models.dart';
 import 'package:scoreboard/components/create/player_setup_page.dart';
@@ -247,158 +246,188 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child : ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-              child: Opacity(
-                opacity: 0.35,
-                child: Image.asset(
-                  'assets/icon/match_vector.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              )
-          ),
-          SafeArea(
-            top: false,
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 18),
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: widget.sport.gradientColors,
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(22),
+      body: CreateBackground(
+        imageOpacity: 0.35,
+        child: SafeArea(
+          top: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 18),
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: widget.sport.gradientColors,
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 56,
-                              height: 56,
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                // ignore: deprecated_member_use
-                                color: Colors.white.withOpacity(0.14),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: SvgPicture.asset(
-                                widget.sport.iconAsset,
-                                width: 30,
-                                height: 30,
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.white,
-                                  BlendMode.srcIn,
-                                ),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 56,
+                            height: 56,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              // ignore: deprecated_member_use
+                              color: Colors.white.withOpacity(0.14),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: SvgPicture.asset(
+                              widget.sport.iconAsset,
+                              width: 30,
+                              height: 30,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
                               ),
                             ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Atur Detail Pertandingan',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    widget.sport.description,
-                                    style: TextStyle(
-                                      // ignore: deprecated_member_use
-                                      color: Colors.white.withOpacity(0.82),
-                                      fontSize: 12,
-                                      height: 1.5,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      _buildSection(
-                        title: 'Nama Pertandingan',
-                        subtitle:
-                            'Masukkan nama pertandingan yang akan tampil di leaderboard.',
-                        child: TextField(
-                          controller: _matchNameController,
-                          textInputAction: TextInputAction.next,
-                          style: const TextStyle(color: textColor),
-                          decoration: _inputDecoration(
-                            label: 'Nama Pertandingan',
-                            hint: 'Contoh: Friday Night Padel',
-                            prefixIcon: const Icon(Icons.emoji_events_outlined),
                           ),
-                        ),
-                      ),
-                      _buildSection(
-                        title: 'Tipe Permainan',
-                        subtitle: _isPadel
-                            ? 'Padel hanya tersedia untuk mode ganda.'
-                            : 'Pilih mode permainan single atau ganda.',
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            const spacing = 10.0;
-                            final itemCount = _availableGameTypes.length;
-                            final itemWidth = itemCount == 1
-                                ? constraints.maxWidth
-                                : (constraints.maxWidth - spacing) / 2;
-
-                            return Wrap(
-                              spacing: spacing,
-                              runSpacing: spacing,
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for (
-                                  int i = 0;
-                                  i < _availableGameTypes.length;
-                                  i++
-                                )
-                                  SizedBox(
-                                    width: itemWidth,
-                                    child: _buildToggleButton(
-                                      label: _availableGameTypes[i],
-                                      selected:
-                                          _selectedGameType ==
-                                          _availableGameTypes[i],
-                                      locked: _availableGameTypes.length == 1,
-                                      onTap: () {
-                                        setState(() {
-                                          _selectedGameType =
-                                              _availableGameTypes[i];
-                                        });
-                                      },
-                                    ),
+                                const Text(
+                                  'Atur Detail Pertandingan',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700,
                                   ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  widget.sport.description,
+                                  style: TextStyle(
+                                    // ignore: deprecated_member_use
+                                    color: Colors.white.withOpacity(0.82),
+                                    fontSize: 12,
+                                    height: 1.5,
+                                  ),
+                                ),
                               ],
-                            );
-                          },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    _buildSection(
+                      title: 'Nama Pertandingan',
+                      subtitle:
+                          'Masukkan nama pertandingan yang akan tampil di leaderboard.',
+                      child: TextField(
+                        controller: _matchNameController,
+                        textInputAction: TextInputAction.next,
+                        style: const TextStyle(color: textColor),
+                        decoration: _inputDecoration(
+                          label: 'Nama Pertandingan',
+                          hint: 'Contoh: Friday Night Padel',
+                          prefixIcon: const Icon(Icons.emoji_events_outlined),
                         ),
                       ),
+                    ),
+                    _buildSection(
+                      title: 'Tipe Permainan',
+                      subtitle: _isPadel
+                          ? 'Padel hanya tersedia untuk mode ganda.'
+                          : 'Pilih mode permainan single atau ganda.',
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          const spacing = 10.0;
+                          final itemCount = _availableGameTypes.length;
+                          final itemWidth = itemCount == 1
+                              ? constraints.maxWidth
+                              : (constraints.maxWidth - spacing) / 2;
+
+                          return Wrap(
+                            spacing: spacing,
+                            runSpacing: spacing,
+                            children: [
+                              for (
+                                int i = 0;
+                                i < _availableGameTypes.length;
+                                i++
+                              )
+                                SizedBox(
+                                  width: itemWidth,
+                                  child: _buildToggleButton(
+                                    label: _availableGameTypes[i],
+                                    selected:
+                                        _selectedGameType ==
+                                        _availableGameTypes[i],
+                                    locked: _availableGameTypes.length == 1,
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedGameType =
+                                            _availableGameTypes[i];
+                                      });
+                                    },
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    _buildSection(
+                      title: 'Leaderboard Rank',
+                      subtitle:
+                          'Tentukan peringkat leaderboard berdasarkan point atau kemenangan.',
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          const spacing = 10.0;
+                          final itemWidth =
+                              _availableLeaderboardRanks.length == 1
+                              ? constraints.maxWidth
+                              : (constraints.maxWidth - spacing) / 2;
+
+                          return Wrap(
+                            spacing: spacing,
+                            runSpacing: spacing,
+                            children: [
+                              for (
+                                int i = 0;
+                                i < _availableLeaderboardRanks.length;
+                                i++
+                              )
+                                SizedBox(
+                                  width: itemWidth,
+                                  child: _buildToggleButton(
+                                    label: _availableLeaderboardRanks[i],
+                                    selected:
+                                        _selectedLeaderboardRank ==
+                                        _availableLeaderboardRanks[i],
+                                    locked:
+                                        _availableLeaderboardRanks.length == 1,
+                                    onTap: () {
+                                      setState(() {
+                                        _selectedLeaderboardRank =
+                                            _availableLeaderboardRanks[i];
+                                      });
+                                    },
+                                  ),
+                                ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    if (_isDomino)
                       _buildSection(
-                        title: 'Leaderboard Rank',
+                        title: 'Mode Skor Domino',
                         subtitle:
-                            'Tentukan peringkat leaderboard berdasarkan point atau kemenangan.',
+                            'Biasa: skor tim hanya ditambah. Reset Angka: saat tim lawan diinput, skor tim sebelumnya otomatis jadi 0.',
                         child: LayoutBuilder(
                           builder: (context, constraints) {
                             const spacing = 10.0;
                             final itemWidth =
-                                _availableLeaderboardRanks.length == 1
-                                ? constraints.maxWidth
-                                : (constraints.maxWidth - spacing) / 2;
+                                (constraints.maxWidth - spacing) / 2;
 
                             return Wrap(
                               spacing: spacing,
@@ -406,23 +435,20 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                               children: [
                                 for (
                                   int i = 0;
-                                  i < _availableLeaderboardRanks.length;
+                                  i < dominoScoreModeOptions.length;
                                   i++
                                 )
                                   SizedBox(
                                     width: itemWidth,
                                     child: _buildToggleButton(
-                                      label: _availableLeaderboardRanks[i],
+                                      label: dominoScoreModeOptions[i],
                                       selected:
-                                          _selectedLeaderboardRank ==
-                                          _availableLeaderboardRanks[i],
-                                      locked:
-                                          _availableLeaderboardRanks.length ==
-                                          1,
+                                          _selectedDominoScoreMode ==
+                                          dominoScoreModeOptions[i],
                                       onTap: () {
                                         setState(() {
-                                          _selectedLeaderboardRank =
-                                              _availableLeaderboardRanks[i];
+                                          _selectedDominoScoreMode =
+                                              dominoScoreModeOptions[i];
                                         });
                                       },
                                     ),
@@ -432,87 +458,46 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
                           },
                         ),
                       ),
-                      if (_isDomino)
-                        _buildSection(
-                          title: 'Mode Skor Domino',
-                          subtitle:
-                              'Biasa: skor tim hanya ditambah. Reset Angka: saat tim lawan diinput, skor tim sebelumnya otomatis jadi 0.',
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              const spacing = 10.0;
-                              final itemWidth =
-                                  (constraints.maxWidth - spacing) / 2;
-
-                              return Wrap(
-                                spacing: spacing,
-                                runSpacing: spacing,
-                                children: [
-                                  for (
-                                    int i = 0;
-                                    i < dominoScoreModeOptions.length;
-                                    i++
-                                  )
-                                    SizedBox(
-                                      width: itemWidth,
-                                      child: _buildToggleButton(
-                                        label: dominoScoreModeOptions[i],
-                                        selected:
-                                            _selectedDominoScoreMode ==
-                                            dominoScoreModeOptions[i],
-                                        onTap: () {
-                                          setState(() {
-                                            _selectedDominoScoreMode =
-                                                dominoScoreModeOptions[i];
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
+                  ],
                 ),
-                SafeArea(
-                  top: false,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: isNextEnabled ? _goToPlayerSetup : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: isNextEnabled
-                              ? widget.sport.gradientColors[0]
-                              : Colors.grey.shade300,
-                          foregroundColor: isNextEnabled
-                              ? Colors.white
-                              : Colors.grey.shade600,
-                          disabledBackgroundColor: Colors.grey.shade800,
-                          disabledForegroundColor: Colors.grey.shade500,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
+              ),
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: isNextEnabled ? _goToPlayerSetup : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isNextEnabled
+                            ? widget.sport.gradientColors[0]
+                            : Colors.grey.shade300,
+                        foregroundColor: isNextEnabled
+                            ? Colors.white
+                            : Colors.grey.shade600,
+                        disabledBackgroundColor: Colors.grey.shade800,
+                        disabledForegroundColor: Colors.grey.shade500,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Text(
-                          'Next',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
+                      ),
+                      child: const Text(
+                        'Next',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
