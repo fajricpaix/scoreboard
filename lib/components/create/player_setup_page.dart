@@ -160,7 +160,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: matchSetup.sport.gradientColors[0],
         elevation: 0,
         titleSpacing: 0,
         leading: const BackButton(color: Colors.white),

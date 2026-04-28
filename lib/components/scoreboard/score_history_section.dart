@@ -83,7 +83,7 @@ class ScoreHistorySection extends StatelessWidget {
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFFE5E7EB)),
+              border: Border.all(color: accentColor),
             ),
             child: Row(
               children: [
@@ -125,7 +125,7 @@ class ScoreHistorySection extends StatelessWidget {
             decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFFE5E7EB)),
+              border: Border.all(color: accentColor),
             ),
             child: const Text(
               'Belum ada riwayat skor.',

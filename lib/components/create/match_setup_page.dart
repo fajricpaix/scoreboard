@@ -234,7 +234,7 @@ class _MatchSetupPageState extends State<MatchSetupPage> {
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: widget.sport.gradientColors[0],
         elevation: 0,
         titleSpacing: 0,
         leading: const BackButton(color: Colors.white),

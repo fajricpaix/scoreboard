@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/create/models.dart';
@@ -569,7 +570,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: accentColor,
         elevation: 0,
         titleSpacing: 0,
         leading: const BackButton(color: Colors.white),
@@ -582,7 +583,21 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: Opacity(
+                opacity: 0.5,
+                child: Image.asset(
+                  'assets/icon/match_vector.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+      Column(
         children: [
           Expanded(
             child: ListView(
@@ -814,6 +829,8 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
           ),
         ],
       ),
+        ]
+      )
     );
   }
 }

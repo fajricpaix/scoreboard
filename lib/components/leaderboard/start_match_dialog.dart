@@ -35,7 +35,7 @@ class _StartMatchDialogState extends State<StartMatchDialog> {
         .toList();
 
     return AlertDialog(
-      backgroundColor: backgroundColor,
+      backgroundColor: const Color(0xFF323232),
       surfaceTintColor: backgroundColor,
       title: Text(
         widget.isDoubleMatch
@@ -54,7 +54,7 @@ class _StartMatchDialogState extends State<StartMatchDialog> {
                   ? 'Dua pemain pertama akan menjadi tim kiri dan dua pemain berikutnya menjadi tim kanan.'
                   : 'Pilih dua pemain yang akan langsung masuk ke scoreboard.',
               style: const TextStyle(
-                color: Colors.black54,
+                color: textColor,
                 fontSize: 12,
                 height: 1.4,
               ),

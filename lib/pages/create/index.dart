@@ -13,7 +13,7 @@ class CreateMatchPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: surfaceColor,
         elevation: 0,
         titleSpacing: 0,
         leading: const BackButton(color: Colors.white),

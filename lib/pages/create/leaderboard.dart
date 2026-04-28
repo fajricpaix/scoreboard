@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/create/models.dart';
 import 'package:scoreboard/components/leaderboard/leaderboard_player_tile.dart';
@@ -328,7 +330,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: accentColor,
         elevation: 0,
         titleSpacing: 0,
         automaticallyImplyLeading: false,
@@ -346,7 +348,21 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           ),
         ),
       ),
-      body: Column(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+              child: Opacity(
+                opacity: 0.5,
+                child: Image.asset(
+                  'assets/icon/match_vector.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        Column(
         children: [
           Expanded(
             child: ListView(
@@ -441,6 +457,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               ),
             ),
           ),
+        ],
+      ),
         ],
       ),
     );
