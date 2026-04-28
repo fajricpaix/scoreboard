@@ -28,7 +28,7 @@ class CreateMatchPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/icon/match_vendor.webp',
+              'assets/icon/match_vendor.jpg',
               fit: BoxFit.cover,
             ),
           ),
