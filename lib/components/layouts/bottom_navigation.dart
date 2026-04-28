@@ -34,6 +34,10 @@ class BottomNavigation extends StatelessWidget {
             icon: Icon(Icons.history, size: 28),
             label: 'Riwayat',
           ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person, size: 28),
+            label: 'Profil',
+          ),
         ],
         currentIndex: selectedIndex,
         selectedItemColor: Theme.of(context).primaryColor,

@@ -3,6 +3,7 @@ import 'package:scoreboard/components/utils/ads.dart';
 import 'theme/index.dart';
 import 'pages/home/index.dart';
 import 'pages/history/index.dart';
+import 'pages/profile/index.dart';
 import 'components/layouts/bottom_navigation.dart';
 
 Future<void> main() async {
@@ -41,7 +42,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Default ke Home
 
-  static const List<Widget> _pages = <Widget>[HomePage(), HistoryPage()];
+  static const List<Widget> _pages = <Widget>[
+    HomePage(),
+    HistoryPage(),
+    ProfilePage(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
