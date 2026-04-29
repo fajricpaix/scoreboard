@@ -62,9 +62,20 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/banners/
-    - assets/icon/
-    - assets/sports/
+    - assets/banners/1.webp
+    - assets/banners/2.webp
+    - assets/banners/3.webp
+    - assets/banners/4.webp
+    - assets/banners/5.webp
+    - assets/icon/indonesia.png
+    - assets/icon/match.webp
+    - assets/icon/match_vector.jpg
+    - assets/icon/tennis.webp
+    - assets/sports/badminton.svg
+    - assets/sports/domino.svg
+    - assets/sports/padel.svg
+    - assets/sports/tenismeja.svg
+    - assets/sports/tennis.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -464,10 +464,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                           children: [
                             CircleAvatar(
                               // ignore: deprecated_member_use
-                              backgroundColor: matchSetup
-                                  .sport
-                                  .gradientColors[0]
-                                  .withOpacity(0.3),
+                              backgroundColor: matchSetup.sport.gradientColors[0].withOpacity(0.3),
                               foregroundColor:
                                   matchSetup.sport.gradientColors[0],
                               child: Text('${index + 1}'),
