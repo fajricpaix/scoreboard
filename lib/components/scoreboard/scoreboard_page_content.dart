@@ -11,6 +11,7 @@ import 'package:scoreboard/components/scoreboard/scoreboard_player_scores_sectio
 import 'package:scoreboard/components/scoreboard/scoreboard_primary_action_section.dart';
 import 'package:scoreboard/components/scoreboard/scoreboard_rules.dart';
 import 'package:scoreboard/components/scoreboard/scoreboard_sets_history_section.dart';
+import 'package:scoreboard/services/match_history_service.dart';
 import 'package:scoreboard/theme/index.dart';
 
 class ScoreboardPageContent extends StatefulWidget {
@@ -446,6 +447,64 @@ class _ScoreboardPageContentState extends State<ScoreboardPageContent> {
     });
   }
 
+  List<MatchSetRecord> _buildCompletedSetRecords() {
+    final setNumbers = _setScores.keys.toList()..sort();
+
+    return setNumbers
+        .where((setNumber) {
+          final setScore = _setScores[setNumber];
+          if (setScore == null) {
+            return false;
+          }
+
+          return _setWinners.containsKey(setNumber) ||
+              setScore.leftScore > 0 ||
+              setScore.rightScore > 0;
+        })
+        .map((setNumber) {
+          final setScore = _setScores[setNumber]!;
+          return MatchSetRecord(
+            setNumber: setNumber,
+            leftScore: setScore.leftScore,
+            rightScore: setScore.rightScore,
+            leftWon: _setWinners[setNumber],
+          );
+        })
+        .toList();
+  }
+
+  MatchHistoryRecord _buildMatchHistoryRecord({
+    required DateTime finishedAt,
+    required MatchResult result,
+  }) {
+    final summaryLeftScore = _usesSetTracking ? _leftSetWins : _leftScore;
+    final summaryRightScore = _usesSetTracking ? _rightSetWins : _rightScore;
+    final orderedHistory = _history.reversed
+        .map(MatchScoreHistoryRecord.fromScoreHistoryItem)
+        .toList();
+
+    return MatchHistoryRecord(
+      id: '${finishedAt.microsecondsSinceEpoch}_${widget.matchSetup.sport.name}_${widget.leftPlayerName}_${widget.rightPlayerName}',
+      sport: widget.matchSetup.sport.name,
+      matchName: widget.matchSetup.matchName,
+      gameType: widget.matchSetup.gameType,
+      scoringSystem: widget.matchSetup.scoringSystem,
+      dominoScoreMode: widget.matchSetup.dominoScoreMode,
+      startedAt: widget.startedAt,
+      finishedAt: finishedAt,
+      leftPlayerName: widget.leftPlayerName,
+      rightPlayerName: widget.rightPlayerName,
+      leftPlayers: widget.leftPlayers,
+      rightPlayers: widget.rightPlayers,
+      winnerNames: result.winnerNames,
+      loserNames: result.loserNames,
+      leftSummaryScore: summaryLeftScore,
+      rightSummaryScore: summaryRightScore,
+      sets: _buildCompletedSetRecords(),
+      scoreHistory: orderedHistory,
+    );
+  }
+
   void _finishMatch() {
     if (!_canFinalizeMatch) {
       return;
@@ -493,15 +552,43 @@ class _ScoreboardPageContentState extends State<ScoreboardPageContent> {
           ],
         );
       },
-    ).then((shouldFinish) {
+    ).then((shouldFinish) async {
       if (shouldFinish != true || !mounted) {
         return;
       }
 
+      final finishedAt = DateTime.now();
+
       setState(() {
-        _matchFinishedAt = DateTime.now();
+        _matchFinishedAt = finishedAt;
       });
       _ticker?.cancel();
+
+      final historyRecord = _buildMatchHistoryRecord(
+        finishedAt: finishedAt,
+        result: result,
+      );
+
+      var saved = await MatchHistoryService.saveMatch(historyRecord);
+      if (!saved) {
+        await Future<void>.delayed(const Duration(milliseconds: 250));
+        saved = await MatchHistoryService.saveMatch(historyRecord);
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      if (!saved) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Pertandingan selesai, tetapi storage lokal belum aktif. Tutup app sepenuhnya lalu jalankan ulang sekali.',
+            ),
+          ),
+        );
+      }
+
       Navigator.of(context).pop(result);
     });
   }

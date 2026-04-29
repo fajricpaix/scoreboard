@@ -497,7 +497,7 @@ class _PlayerSetupPageState extends State<PlayerSetupPage> {
                                       Text(
                                         player.gender,
                                         style: const TextStyle(
-                                          color: Colors.black54,
+                                          color: Colors.grey,
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500,
                                         ),
