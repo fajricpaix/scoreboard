@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/utils/ads.dart';
+import 'package:scoreboard/services/auth_service.dart';
 import 'theme/index.dart';
 import 'pages/home/index.dart';
 import 'pages/history/index.dart';
@@ -8,6 +9,7 @@ import 'components/layouts/bottom_navigation.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.initialize();
   await AppAds.initialize();
   runApp(const MyApp());
 }

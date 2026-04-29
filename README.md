@@ -15,3 +15,18 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Firebase Login Setup
+
+History dan Profile sekarang meminta login Google melalui Firebase Auth.
+
+Sebelum menjalankan aplikasi, lengkapi setup berikut:
+
+1. Buat aplikasi Android dan iOS di Firebase project Anda.
+2. Aktifkan provider Google di Firebase Authentication.
+3. Unduh `google-services.json` lalu simpan ke `android/app/google-services.json`.
+4. Unduh `GoogleService-Info.plist` lalu tambahkan ke target `ios/Runner`.
+5. Jalankan `flutter pub get`.
+6. Jalankan ulang aplikasi.
+
+Jika Anda memakai FlutterFire CLI, konfigurasi native bisa dibuat dengan `flutterfire configure` lalu sesuaikan project ini dengan file output yang dihasilkan.
