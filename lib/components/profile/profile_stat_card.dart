@@ -19,7 +19,7 @@ class ProfileStatCard extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(

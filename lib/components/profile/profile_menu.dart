@@ -11,7 +11,7 @@ class ProfileMenu extends StatelessWidget {
       decoration: BoxDecoration(
         // ignore: deprecated_member_use
         color: Colors.blueGrey.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white),
       ),
       child: Column(
@@ -19,12 +19,6 @@ class ProfileMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.badge_outlined, color: textColor),
             title: Text('Detail Profil', style: TextStyle(color: textColor)),
-            trailing: Icon(Icons.chevron_right, color: textColor),
-          ),
-          Divider(height: 1, color: Colors.white),
-          ListTile(
-            leading: Icon(Icons.notifications_outlined, color: textColor),
-            title: Text('Pengaturan Notifikasi', style: TextStyle(color: textColor)),
             trailing: Icon(Icons.chevron_right, color: textColor),
           ),
           Divider(height: 1, color: Colors.white),

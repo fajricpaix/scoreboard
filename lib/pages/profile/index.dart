@@ -65,7 +65,7 @@ class ProfilePage extends StatelessWidget {
               const ProfileHeader(),
               const ProfileStatsRow(),
               const ProfileMenu(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               ProfileLogoutButton(
                 onPressed: () async {
                   await _confirmSignOut(context);
