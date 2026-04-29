@@ -39,7 +39,8 @@ class AuthService {
     return _firebaseAuth.authStateChanges();
   }
 
-  static User? get currentUser => _isInitialized ? _firebaseAuth.currentUser : null;
+  static User? get currentUser =>
+      _isInitialized ? _firebaseAuth.currentUser : null;
 
   static Future<void> signInWithGoogle() async {
     if (!_isInitialized) {
@@ -101,9 +102,6 @@ class AuthService {
       return;
     }
 
-    await Future.wait([
-      _firebaseAuth.signOut(),
-      _googleSignIn.signOut(),
-    ]);
+    await Future.wait([_firebaseAuth.signOut(), _googleSignIn.signOut()]);
   }
 }

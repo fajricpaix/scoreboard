@@ -11,27 +11,27 @@ class ProfileStatsRow extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20.0),
         child: Row(
-          children: const [
-            Expanded(
-              child: ProfileStatCard(
-                label: 'Umur',
-                value: '33',
-                suffix: 'tahun',
-              ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
+          children: [
+            const Expanded(
               child: ProfileStatCard(
                 label: 'Main',
                 value: '12',
                 suffix: 'kali',
               ),
             ),
-            SizedBox(width: 12),
-            Expanded(
+            const SizedBox(width: 12),
+            const Expanded(
               child: ProfileStatCard(
                 label: 'Menang',
                 value: '48',
+                suffix: 'kali',
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: ProfileStatCard(
+                label: 'Kalah',
+                value: '12',
                 suffix: 'kali',
               ),
             ),

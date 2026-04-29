@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scoreboard/services/auth_service.dart';
 import 'package:scoreboard/theme/index.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
 
+  String _resolveUserDisplayName() {
+    final user = AuthService.currentUser;
+    final String? displayName = user?.displayName?.trim();
+    if (displayName != null && displayName.isNotEmpty) {
+      return displayName;
+    }
+
+    final String? email = user?.email?.trim();
+    if (email != null && email.isNotEmpty) {
+      return email.split('@').first;
+    }
+
+    return 'Pengguna';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final String userDisplayName = _resolveUserDisplayName();
+
     return Container(
       width: double.infinity,
       height: 300,
@@ -53,8 +71,8 @@ class ProfileHeader extends StatelessWidget {
               children: [
                 Image.asset('assets/icon/indonesia.png', height: 38),
                 const SizedBox(height: 20),
-                const Text(
-                  'Muhammad Fajri',
+                Text(
+                  userDisplayName,
                   style: TextStyle(
                     color: textColor,
                     fontSize: 36,

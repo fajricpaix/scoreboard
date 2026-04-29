@@ -17,18 +17,26 @@ class ProfilePage extends StatelessWidget {
         return AlertDialog(
           backgroundColor: backgroundColor,
           surfaceTintColor: backgroundColor,
-          title: const Text('Keluar dari akun?'),
+          title: const Text(
+            'Keluar dari akun?',
+            style: TextStyle(color: textColor),
+          ),
           content: const Text(
             'Anda yakin ingin logout dari akun Google ini?',
+            style: TextStyle(color: textColor),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
               },
-              child: const Text('Batal'),
+              child: const Text('Batal', style: TextStyle(color: textColor)),
             ),
             FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: error,
+                foregroundColor: Colors.white,
+              ),
               onPressed: () {
                 Navigator.of(dialogContext).pop(true);
               },
