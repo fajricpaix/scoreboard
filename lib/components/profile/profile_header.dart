@@ -21,9 +21,21 @@ class ProfileHeader extends StatelessWidget {
     return 'Pengguna';
   }
 
+  String _resolveEmailAddress() {
+    final String? email = AuthService.currentUser?.email?.trim();
+    if (email != null && email.isNotEmpty) {
+      return email;
+    }
+
+    return _resolveUserDisplayName();
+  }
+
   @override
   Widget build(BuildContext context) {
     final String userDisplayName = _resolveUserDisplayName();
+    final String emailAddress = _resolveEmailAddress();
+    final String? userPhotoUrl = AuthService.currentUser?.photoURL?.trim();
+    final bool hasUserPhoto = userPhotoUrl != null && userPhotoUrl.isNotEmpty;
 
     return Container(
       width: double.infinity,
@@ -69,7 +81,16 @@ class ProfileHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset('assets/icon/indonesia.png', height: 38),
+                CircleAvatar(
+                  radius: 16,
+                  backgroundColor: Colors.white24,
+                  backgroundImage: hasUserPhoto
+                      ? NetworkImage(userPhotoUrl)
+                      : null,
+                  child: !hasUserPhoto
+                      ? const Icon(Icons.person, color: Colors.white, size: 18)
+                      : null,
+                ),
                 const SizedBox(height: 20),
                 Text(
                   userDisplayName,
@@ -77,6 +98,14 @@ class ProfileHeader extends StatelessWidget {
                     color: textColor,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 100),
+                Text(
+                  emailAddress,
+                  style: TextStyle(
+                    color: textColor,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ],
