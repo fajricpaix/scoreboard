@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scoreboard/components/home/add_match_header.dart';
 import 'package:scoreboard/components/home/auto_carousel.dart';
@@ -11,11 +12,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+    final String greeting = _greeting();
+    final String name = user?.displayName ?? 'Pengguna';
+
     return Scaffold(
       backgroundColor: primaryColor,
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
+            // Greeting header (hanya jika sudah login)
+            if (user != null)
+              SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      greeting,
+                      style: const TextStyle(
+                        color: textColor,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             // Tombol pertandingan baru - sticky saat scroll
             SliverPersistentHeader(
               pinned: true,
@@ -45,5 +78,13 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _greeting() {
+    final int hour = DateTime.now().hour;
+    if (hour < 11) return 'Selamat Pagi,';
+    if (hour < 15) return 'Selamat Siang,';
+    if (hour < 18) return 'Selamat Sore,';
+    return 'Selamat Malam,';
   }
 }
