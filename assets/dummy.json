@@ -1,0 +1,573 @@
+{
+  "leaderboards": {
+    "0": {
+      "id": "lb_001",
+      "matchName": "Sesi Badminton Jumat",
+      "sport": "Badminton",
+      "gameType": "Single",
+      "scoringSystem": "Set",
+      "targetSets": 3,
+      "targetPoints": null,
+      "leaderboardRankBy": "Kemenangan",
+      "createdAt": "2026-04-25T18:00:00.000Z",
+      "finishedAt": "2026-04-25T21:30:00.000Z",
+      "players": [
+        {
+          "name": "Rafi",
+          "gender": "Pria",
+          "play": 4,
+          "win": 3,
+          "lose": 1,
+          "point": 3
+        },
+        {
+          "name": "Dinda",
+          "gender": "Wanita",
+          "play": 4,
+          "win": 2,
+          "lose": 2,
+          "point": 2
+        },
+        {
+          "name": "Budi",
+          "gender": "Pria",
+          "play": 3,
+          "win": 1,
+          "lose": 2,
+          "point": 1
+        },
+        {
+          "name": "Sari",
+          "gender": "Wanita",
+          "play": 3,
+          "win": 0,
+          "lose": 3,
+          "point": 0
+        }
+      ],
+      "matchHistory": [
+        {
+          "id": "match_001",
+          "startedAt": "2026-04-25T18:05:00.000Z",
+          "finishedAt": "2026-04-25T18:45:00.000Z",
+          "leftPlayers": [
+            "Rafi"
+          ],
+          "rightPlayers": [
+            "Dinda"
+          ],
+          "winnerNames": [
+            "Rafi"
+          ],
+          "loserNames": [
+            "Dinda"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 1,
+              "rightScore": 0,
+              "note": "Rafi mencetak poin",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 1,
+              "rightScore": 1,
+              "note": "Dinda mencetak poin",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 2,
+              "rightScore": 1,
+              "note": "Rafi mencetak poin",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 8,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 0,
+              "rightScore": 1,
+              "note": "Dinda mencetak poin",
+              "setNumber": 2
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 9,
+              "note": "Set 2 selesai - Rafi menang",
+              "setNumber": 2
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 0,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 11,
+                "rightScore": 8
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 11,
+                "rightScore": 9
+              }
+            ]
+          }
+        },
+        {
+          "id": "match_002",
+          "startedAt": "2026-04-25T18:50:00.000Z",
+          "finishedAt": "2026-04-25T19:30:00.000Z",
+          "leftPlayers": [
+            "Budi"
+          ],
+          "rightPlayers": [
+            "Sari"
+          ],
+          "winnerNames": [
+            "Budi"
+          ],
+          "loserNames": [
+            "Sari"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 1,
+              "rightScore": 0,
+              "note": "Budi mencetak poin",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 6,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 4,
+              "note": "Set 2 selesai - Budi menang",
+              "setNumber": 2
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 0,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 11,
+                "rightScore": 6
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 11,
+                "rightScore": 4
+              }
+            ]
+          }
+        },
+        {
+          "id": "match_003",
+          "startedAt": "2026-04-25T19:35:00.000Z",
+          "finishedAt": "2026-04-25T20:20:00.000Z",
+          "leftPlayers": [
+            "Rafi"
+          ],
+          "rightPlayers": [
+            "Budi"
+          ],
+          "winnerNames": [
+            "Rafi"
+          ],
+          "loserNames": [
+            "Budi"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 11,
+              "rightScore": 7,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 9,
+              "rightScore": 11,
+              "note": "Set 2 selesai",
+              "setNumber": 2
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 10,
+              "note": "Set 3 selesai - Rafi menang",
+              "setNumber": 3
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 1,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 11,
+                "rightScore": 7
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 9,
+                "rightScore": 11
+              },
+              {
+                "setNumber": 3,
+                "leftScore": 11,
+                "rightScore": 10
+              }
+            ]
+          }
+        },
+        {
+          "id": "match_004",
+          "startedAt": "2026-04-25T20:25:00.000Z",
+          "finishedAt": "2026-04-25T21:00:00.000Z",
+          "leftPlayers": [
+            "Dinda"
+          ],
+          "rightPlayers": [
+            "Sari"
+          ],
+          "winnerNames": [
+            "Dinda"
+          ],
+          "loserNames": [
+            "Sari"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 11,
+              "rightScore": 5,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 11,
+              "rightScore": 3,
+              "note": "Set 2 selesai - Dinda menang",
+              "setNumber": 2
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 0,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 11,
+                "rightScore": 5
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 11,
+                "rightScore": 3
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "1":{
+      "id": "lb_002",
+      "matchName": "Turnamen Domino Malam",
+      "sport": "Domino",
+      "gameType": "Single",
+      "scoringSystem": "Points",
+      "targetPoints": 100,
+      "targetSets": null,
+      "leaderboardRankBy": "Point",
+      "dominoScoreMode": "Biasa",
+      "createdAt": "2026-04-26T19:00:00.000Z",
+      "finishedAt": "2026-04-26T22:00:00.000Z",
+      "players": [
+        {
+          "name": "Anton",
+          "gender": "Pria",
+          "play": 3,
+          "win": 2,
+          "lose": 1,
+          "point": 2
+        },
+        {
+          "name": "Nia",
+          "gender": "Wanita",
+          "play": 3,
+          "win": 1,
+          "lose": 2,
+          "point": 1
+        },
+        {
+          "name": "Hendra",
+          "gender": "Pria",
+          "play": 2,
+          "win": 1,
+          "lose": 1,
+          "point": 1
+        }
+      ],
+      "matchHistory": [
+        {
+          "id": "match_005",
+          "startedAt": "2026-04-26T19:10:00.000Z",
+          "finishedAt": "2026-04-26T19:55:00.000Z",
+          "leftPlayers": [
+            "Anton"
+          ],
+          "rightPlayers": [
+            "Nia"
+          ],
+          "winnerNames": [
+            "Anton"
+          ],
+          "loserNames": [
+            "Nia"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 15,
+              "rightScore": 0,
+              "note": "Ronde 1",
+              "setNumber": null
+            },
+            {
+              "leftScore": 30,
+              "rightScore": 10,
+              "note": "Ronde 2",
+              "setNumber": null
+            },
+            {
+              "leftScore": 55,
+              "rightScore": 25,
+              "note": "Ronde 3",
+              "setNumber": null
+            },
+            {
+              "leftScore": 100,
+              "rightScore": 40,
+              "note": "Anton mencapai 100 - menang",
+              "setNumber": null
+            }
+          ],
+          "finalScore": {
+            "leftScore": 100,
+            "rightScore": 40,
+            "sets": []
+          }
+        },
+        {
+          "id": "match_006",
+          "startedAt": "2026-04-26T20:00:00.000Z",
+          "finishedAt": "2026-04-26T20:50:00.000Z",
+          "leftPlayers": [
+            "Nia"
+          ],
+          "rightPlayers": [
+            "Hendra"
+          ],
+          "winnerNames": [
+            "Hendra"
+          ],
+          "loserNames": [
+            "Nia"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 0,
+              "rightScore": 20,
+              "note": "Ronde 1",
+              "setNumber": null
+            },
+            {
+              "leftScore": 10,
+              "rightScore": 50,
+              "note": "Ronde 2",
+              "setNumber": null
+            },
+            {
+              "leftScore": 10,
+              "rightScore": 100,
+              "note": "Hendra mencapai 100 - menang",
+              "setNumber": null
+            }
+          ],
+          "finalScore": {
+            "leftScore": 10,
+            "rightScore": 100,
+            "sets": []
+          }
+        }
+      ]
+    },
+    "2": {
+      "id": "lb_003",
+      "matchName": "Ganda Tenis Sabtu Pagi",
+      "sport": "Tenis",
+      "gameType": "Ganda",
+      "scoringSystem": "Set",
+      "targetSets": 3,
+      "targetPoints": null,
+      "leaderboardRankBy": "Kemenangan",
+      "createdAt": "2026-04-27T07:00:00.000Z",
+      "finishedAt": "2026-04-27T10:00:00.000Z",
+      "players": [
+        {
+          "name": "Kevin",
+          "gender": "Pria",
+          "play": 2,
+          "win": 2,
+          "lose": 0,
+          "point": 2
+        },
+        {
+          "name": "Maya",
+          "gender": "Wanita",
+          "play": 2,
+          "win": 2,
+          "lose": 0,
+          "point": 2
+        },
+        {
+          "name": "Farel",
+          "gender": "Pria",
+          "play": 2,
+          "win": 0,
+          "lose": 2,
+          "point": 0
+        },
+        {
+          "name": "Tika",
+          "gender": "Wanita",
+          "play": 2,
+          "win": 0,
+          "lose": 2,
+          "point": 0
+        }
+      ],
+      "matchHistory": [
+        {
+          "id": "match_007",
+          "startedAt": "2026-04-27T07:10:00.000Z",
+          "finishedAt": "2026-04-27T08:30:00.000Z",
+          "leftPlayers": [
+            "Kevin",
+            "Maya"
+          ],
+          "rightPlayers": [
+            "Farel",
+            "Tika"
+          ],
+          "winnerNames": [
+            "Kevin",
+            "Maya"
+          ],
+          "loserNames": [
+            "Farel",
+            "Tika"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 6,
+              "rightScore": 3,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 6,
+              "rightScore": 4,
+              "note": "Set 2 selesai - Kevin/Maya menang",
+              "setNumber": 2
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 0,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 6,
+                "rightScore": 3
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 6,
+                "rightScore": 4
+              }
+            ]
+          }
+        },
+        {
+          "id": "match_008",
+          "startedAt": "2026-04-27T08:40:00.000Z",
+          "finishedAt": "2026-04-27T10:00:00.000Z",
+          "leftPlayers": [
+            "Kevin",
+            "Maya"
+          ],
+          "rightPlayers": [
+            "Farel",
+            "Tika"
+          ],
+          "winnerNames": [
+            "Kevin",
+            "Maya"
+          ],
+          "loserNames": [
+            "Farel",
+            "Tika"
+          ],
+          "scoreHistory": [
+            {
+              "leftScore": 6,
+              "rightScore": 2,
+              "note": "Set 1 selesai",
+              "setNumber": 1
+            },
+            {
+              "leftScore": 4,
+              "rightScore": 6,
+              "note": "Set 2 selesai",
+              "setNumber": 2
+            },
+            {
+              "leftScore": 6,
+              "rightScore": 5,
+              "note": "Set 3 selesai - Kevin/Maya menang",
+              "setNumber": 3
+            }
+          ],
+          "finalScore": {
+            "leftScore": 2,
+            "rightScore": 1,
+            "sets": [
+              {
+                "setNumber": 1,
+                "leftScore": 6,
+                "rightScore": 2
+              },
+              {
+                "setNumber": 2,
+                "leftScore": 4,
+                "rightScore": 6
+              },
+              {
+                "setNumber": 3,
+                "leftScore": 6,
+                "rightScore": 5
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
